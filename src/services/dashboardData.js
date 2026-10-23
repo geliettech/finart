@@ -77,16 +77,16 @@ const watchOwnedCollection = (name, uid, onData, onError, sortField) => {
           const bValue = b[sortField]?.toMillis?.() ?? b[sortField] ?? "";
           return String(bValue).localeCompare(String(aValue));
         });
-        onData(items);
+        onData(items, name);
       },
-      onError,
+      (error) => onError(error, name),
     );
   }
 
   return onSnapshot(
     query(collectionRef(name), ...constraints),
-    (snapshot) => onData(snapshot.docs.map((item) => ({ id: item.id, ...item.data() }))),
-    onError,
+    (snapshot) => onData(snapshot.docs.map((item) => ({ id: item.id, ...item.data() })), name),
+    (error) => onError(error, name),
   );
 };
 
