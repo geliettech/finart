@@ -1,5 +1,5 @@
-import { initializeApp } from "firebase/app";
-import { getAuth, GoogleAuthProvider, setPersistence, browserSessionPersistence } from "firebase/auth";
+import { getApp, getApps, initializeApp } from "firebase/app";
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
@@ -12,16 +12,24 @@ const firebaseConfig = {
   measurementId: import.meta.env.VITE_FIREBASE_MEASUREMENT_ID,
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-// Initialize Firebase Authentication and get a reference to the service
+const requiredConfig = [
+  ["VITE_FIREBASE_API_KEY", firebaseConfig.apiKey],
+  ["VITE_FIREBASE_AUTH_DOMAIN", firebaseConfig.authDomain],
+  ["VITE_FIREBASE_PROJECT_ID", firebaseConfig.projectId],
+  ["VITE_FIREBASE_APP_ID", firebaseConfig.appId],
+];
+const missingConfig = requiredConfig
+  .filter(([, value]) => !value)
+  .map(([name]) => name);
+
+if (missingConfig.length > 0) {
+  throw new Error(
+    `Firebase configuration is incomplete. Set these public environment variables and restart the dev server: ${missingConfig.join(", ")}.`,
+  );
+}
+
+const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
-
-setPersistence(auth, browserSessionPersistence).catch((error) => {
-  console.error("Firebase auth persistence setup failed:", error);
-});
-
-// Google provider instance
 export const googleProvider = new GoogleAuthProvider();
-// Initialize Cloud Firestore and get a reference to the service
 export const db = getFirestore(app);

@@ -1,213 +1,212 @@
-import { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
-import { z } from "zod";
+import { useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link, useNavigate } from "react-router";
-import { AuthLayout } from "../../layout/dashboard/authLayout";
-import { Button } from "@/components/ui/button";
-import { CardAction } from "@/components/ui/card";
-import {
-  Field,
-  FieldError,
-  FieldGroup,
-  FieldLabel,
-} from "@/components/ui/field";
+import { Link, useLocation, useNavigate } from "react-router";
+import { ArrowRight } from "lucide-react";
+import { AuthLayout } from "@/layout/dashboard/authLayout";
+import PasswordField from "@/components/PasswordField";
+import { Field, FieldError } from "@/components/ui/field";
 import { Input } from "@/components/ui/input";
-import { signUp, signInWithGoogle } from "@/services/auth";
+import { signInWithGoogle, signUp, getAuthErrorMessage } from "@/services/auth";
+import { getSafeReturnTo } from "@/utils/authNavigation";
+import { signUpSchema } from "@/utils/authSchemas";
 import { toast } from "react-toastify";
 
-
-
-
-// Validation Schema
-const schema = z.object({
-  fullName: z
-    .string()
-    .min(2, "Full name must be at least 2 characters long")
-    .max(100, "Full name is too long"),
-
-  email: z
-    .string()
-    .email("Please enter a valid email address"),
-
-  password: z
-    .string()
-    .min(6, "Password must be at least 6 characters long"),
-});
-
 const SignUpPage = () => {
-  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
+  const location = useLocation();
+  const [googleLoading, setGoogleLoading] = useState(false);
+  const actionLock = useRef(false);
   const form = useForm({
-    resolver: zodResolver(schema),
+    resolver: zodResolver(signUpSchema),
     defaultValues: {
       fullName: "",
       email: "",
       password: "",
+      confirmPassword: "",
     },
   });
+  const isBusy = form.formState.isSubmitting || googleLoading;
 
-
-  const onSubmit = async (data) => {
+  const onSubmit = async ({ fullName, email, password }) => {
+    if (actionLock.current) return;
+    actionLock.current = true;
     try {
-      setLoading(true);
-
-      await signUp(
-        data.fullName,
-        data.email,
-        data.password
-      );
-
-      toast.success(
-        "Account created successfully. Please verify your email."
-      );
+      await signUp(fullName, email, password);
+      toast.success("Account created. Check your inbox and spam folder to verify your email.");
+      navigate("/email-verify", {
+        replace: true,
+        state: { from: location.state?.from },
+      });
     } catch (error) {
-      toast.error(error.message);
+      toast.error(getAuthErrorMessage(error));
     } finally {
-      setLoading(false);
-      form.reset();
+      actionLock.current = false;
     }
   };
 
+  const handleGoogleSignUp = async () => {
+    if (actionLock.current) return;
+    actionLock.current = true;
+    setGoogleLoading(true);
 
-  const handleGoogleSignup = async () => {
     try {
-      setLoading(true);
+      const user = await signInWithGoogle();
+      if (!user.emailVerified) {
+        navigate("/email-verify", {
+          replace: true,
+          state: { from: location.state?.from },
+        });
+        return;
+      }
 
-      await signInWithGoogle();
-
-      toast.success("Account created successfully!");
-
-      navigate("/dashboard");
+      navigate(getSafeReturnTo(location.state), { replace: true });
     } catch (error) {
-      toast.error(error.message);
+      toast.error(getAuthErrorMessage(error));
     } finally {
-      setLoading(false);
+      actionLock.current = false;
+      setGoogleLoading(false);
     }
   };
 
   return (
     <AuthLayout
-      title="Sign Up"
-      description="Enter your details to create an account"
-      imgTitle='Let’s get started' imgSubtitle='Take control of your money with smart tracking and clear insights.'
-      footer={
-        <>
-          <Button
-            type="submit" size="lg"
-            form="signup-form"
-            className="w-full"
-            disabled={loading}
-          >
-            {loading ? "Creating Account..." : "Sign Up"}
-          </Button>
-
-          <Button
-            type="button"
-            variant="outline"
-            className="w-full"
-            size="lg"
-            disabled={loading}
-            onClick={handleGoogleSignup}
-          >
-            {loading ? "Signing..." : "Continue with Google"}
-          </Button>
-
-          <CardAction className="flex items-center gap-2">
-            <small>Already have an account?</small>
-
-            <Button variant="link" asChild>
-              <Link to="/sign-in">Sign In</Link>
-            </Button>
-          </CardAction>
-        </>
-      }
+      title="Create your account"
+      description="Start bringing your financial activity into clearer view."
+      imgTitle="A clearer picture of your money starts here."
+      imgSubtitle="Create your account to organize your finances and explore insights that help you plan your next step."
     >
       <form
-        id="signup-form"
+        noValidate
         onSubmit={form.handleSubmit(onSubmit)}
-        className="flex flex-col space-y-4"
+        className="space-y-5"
+        aria-busy={isBusy}
       >
-        <FieldGroup>
-          {/* Full Name */}
-          <Controller
-            name="fullName"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.fullName}>
-                  Full Name
-                </FieldLabel>
+        <Controller
+          name="fullName"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <label htmlFor="signup-name" className="text-sm font-medium">Full name</label>
+              <Input
+                {...field}
+                id="signup-name"
+                type="text"
+                placeholder="Alex Morgan"
+                autoComplete="name"
+                aria-invalid={fieldState.invalid}
+                aria-describedby={fieldState.error ? "signup-name-error" : undefined}
+                className="h-12 rounded-xl px-3"
+              />
+              {fieldState.error && (
+                <FieldError id="signup-name-error" errors={[fieldState.error]} />
+              )}
+            </Field>
+          )}
+        />
 
-                <Input
-                  {...field}
-                  id={field.fullName}
-                  placeholder="John Doe"
-                  autoComplete="Full Name"
-                  aria-invalid={fieldState.invalid}
-                />
+        <Controller
+          name="email"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <label htmlFor="signup-email" className="text-sm font-medium">Email address</label>
+              <Input
+                {...field}
+                id="signup-email"
+                type="email"
+                placeholder="you@example.com"
+                autoComplete="email"
+                aria-invalid={fieldState.invalid}
+                aria-describedby={fieldState.error ? "signup-email-error" : undefined}
+                className="h-12 rounded-xl px-3"
+              />
+              {fieldState.error && (
+                <FieldError id="signup-email-error" errors={[fieldState.error]} />
+              )}
+            </Field>
+          )}
+        />
 
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
+        <Controller
+          name="password"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <label htmlFor="signup-password" className="text-sm font-medium">Password</label>
+              <PasswordField
+                id="signup-password"
+                field={field}
+                invalid={fieldState.invalid}
+                describedBy={fieldState.error ? "signup-password-error signup-password-hint" : "signup-password-hint"}
+                autoComplete="new-password"
+              />
+              <p id="signup-password-hint" className="text-xs leading-5 text-[#718076] dark:text-[#aebcb1]">
+                Use at least 8 characters, including an uppercase letter, a lowercase letter, and a number.
+              </p>
+              {fieldState.error && (
+                <FieldError id="signup-password-error" errors={[fieldState.error]} />
+              )}
+            </Field>
+          )}
+        />
 
-          {/* Email */}
-          <Controller
-            name="email"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.email}>
-                  Email
-                </FieldLabel>
+        <Controller
+          name="confirmPassword"
+          control={form.control}
+          render={({ field, fieldState }) => (
+            <Field data-invalid={fieldState.invalid}>
+              <label htmlFor="signup-confirm-password" className="text-sm font-medium">Confirm password</label>
+              <PasswordField
+                id="signup-confirm-password"
+                field={field}
+                invalid={fieldState.invalid}
+                describedBy={fieldState.error ? "signup-confirm-error" : undefined}
+                autoComplete="new-password"
+              />
+              {fieldState.error && (
+                <FieldError id="signup-confirm-error" errors={[fieldState.error]} />
+              )}
+            </Field>
+          )}
+        />
 
-                <Input
-                  {...field}
-                  id={field.email}
-                  type="email"
-                  placeholder="johndoe@example.com"
-                  autoComplete="email"
-                  aria-invalid={fieldState.invalid}
-                />
-
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-
-          {/* Password */}
-          <Controller
-            name="password"
-            control={form.control}
-            render={({ field, fieldState }) => (
-              <Field data-invalid={fieldState.invalid}>
-                <FieldLabel htmlFor={field.password}>
-                  Password
-                </FieldLabel>
-
-                <Input
-                  {...field}
-                  id={field.password}
-                  type="password"
-                  placeholder="********"
-                  autoComplete="current-password"
-                  aria-invalid={fieldState.invalid}
-                />
-
-                {fieldState.error && (
-                  <FieldError errors={[fieldState.error]} />
-                )}
-              </Field>
-            )}
-          />
-        </FieldGroup>
+        <button
+          type="submit"
+          disabled={isBusy}
+          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#174b38] px-5 py-3 font-semibold text-white transition hover:bg-[#103b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {form.formState.isSubmitting ? "Creating account…" : "Create account"}
+          {!isBusy && <ArrowRight aria-hidden="true" size={18} />}
+        </button>
       </form>
+
+      <div className="my-5 flex items-center gap-3 text-xs text-[#879188]" aria-hidden="true">
+        <span className="h-px flex-1 bg-[#e5ebe3] dark:bg-white/10" />
+        or
+        <span className="h-px flex-1 bg-[#e5ebe3] dark:bg-white/10" />
+      </div>
+
+      <button
+        type="button"
+        onClick={handleGoogleSignUp}
+        disabled={isBusy}
+        className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#d8e2d5] px-5 py-3 font-semibold transition hover:bg-[#f3f6f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:hover:bg-white/10"
+      >
+        <span aria-hidden="true" className="font-bold text-[#4285f4]">G</span>
+        {googleLoading ? "Connecting to Google…" : "Continue with Google"}
+      </button>
+
+      <p className="mt-6 text-center text-sm text-[#68766b] dark:text-[#bdc9bf]">
+        Already have an account?{" "}
+        <Link
+          to="/sign-in"
+          state={{ from: location.state?.from }}
+          className="font-semibold text-[#174b38] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:text-[#d0e7ad]"
+        >
+          Log in
+        </Link>
+      </p>
     </AuthLayout>
   );
 };

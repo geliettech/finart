@@ -1,0 +1,130 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    function signedIn() {
+      return request.auth != null && request.auth.token.email_verified == true;
+    }
+
+    function ownsExistingRecord() {
+      return signedIn() && resource.data.userId == request.auth.uid;
+    }
+
+    function ownsNewRecord() {
+      return signedIn() && request.resource.data.userId == request.auth.uid;
+    }
+
+    function validTransaction() {
+      return request.resource.data.keys().hasOnly([
+          'userId', 'description', 'transactionAmount', 'transactionType',
+          'category', 'currency', 'transactionDate', 'notes', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'userId', 'description', 'transactionAmount', 'transactionType',
+          'category', 'currency', 'transactionDate', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.description is string
+        && request.resource.data.description.size() > 0
+        && request.resource.data.description.size() <= 120
+        && request.resource.data.transactionAmount is number
+        && request.resource.data.transactionAmount > 0
+        && request.resource.data.transactionAmount <= 1000000000000
+        && request.resource.data.transactionType in ['income', 'expense', 'investment']
+        && request.resource.data.category is string
+        && request.resource.data.category.size() > 0
+        && request.resource.data.category.size() <= 60
+        && request.resource.data.currency is string
+        && request.resource.data.currency.matches('^[A-Z]{3}$')
+        && request.resource.data.transactionDate.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && request.resource.data.updatedAt == request.time
+        && (!('notes' in request.resource.data)
+          || (request.resource.data.notes is string && request.resource.data.notes.size() <= 500));
+    }
+
+    function validBudget() {
+      return request.resource.data.keys().hasOnly([
+          'userId', 'category', 'amount', 'currency', 'month', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'userId', 'category', 'amount', 'currency', 'month', 'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.category is string
+        && request.resource.data.category.size() > 0
+        && request.resource.data.category.size() <= 60
+        && request.resource.data.amount is number
+        && request.resource.data.amount > 0
+        && request.resource.data.amount <= 1000000000000
+        && request.resource.data.currency.matches('^[A-Z]{3}$')
+        && request.resource.data.month.matches('^\\d{4}-(0[1-9]|1[0-2])$')
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    function validRecurring() {
+      return request.resource.data.keys().hasOnly([
+          'userId', 'description', 'amount', 'currency', 'category',
+          'transactionType', 'frequency', 'nextDate', 'endDate', 'status',
+          'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.keys().hasAll([
+          'userId', 'description', 'amount', 'currency', 'category',
+          'transactionType', 'frequency', 'nextDate', 'endDate', 'status',
+          'createdAt', 'updatedAt'
+        ])
+        && request.resource.data.description is string
+        && request.resource.data.description.size() > 0
+        && request.resource.data.description.size() <= 120
+        && request.resource.data.amount is number
+        && request.resource.data.amount > 0
+        && request.resource.data.amount <= 1000000000000
+        && request.resource.data.currency.matches('^[A-Z]{3}$')
+        && request.resource.data.category is string
+        && request.resource.data.category.size() > 0
+        && request.resource.data.category.size() <= 60
+        && request.resource.data.transactionType in ['income', 'expense']
+        && request.resource.data.frequency in ['weekly', 'monthly', 'quarterly', 'yearly']
+        && request.resource.data.nextDate.matches('^\\d{4}-\\d{2}-\\d{2}$')
+        && request.resource.data.endDate is string
+        && (request.resource.data.endDate == ''
+          || (request.resource.data.endDate.matches('^\\d{4}-\\d{2}-\\d{2}$')
+            && request.resource.data.endDate >= request.resource.data.nextDate))
+        && request.resource.data.status in ['active', 'paused', 'completed']
+        && request.resource.data.updatedAt == request.time;
+    }
+
+    match /transactions/{transactionId} {
+      allow read: if ownsExistingRecord();
+      allow create: if ownsNewRecord()
+        && request.resource.data.createdAt == request.time
+        && validTransaction();
+      allow update: if ownsExistingRecord()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && validTransaction();
+      allow delete: if ownsExistingRecord();
+    }
+
+    match /budgets/{budgetId} {
+      allow read: if ownsExistingRecord();
+      allow create: if ownsNewRecord()
+        && request.resource.data.createdAt == request.time
+        && validBudget();
+      allow update: if ownsExistingRecord()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && validBudget();
+      allow delete: if ownsExistingRecord();
+    }
+
+    match /recurring/{scheduleId} {
+      allow read: if ownsExistingRecord();
+      allow create: if ownsNewRecord()
+        && request.resource.data.createdAt == request.time
+        && validRecurring();
+      allow update: if ownsExistingRecord()
+        && request.resource.data.userId == request.auth.uid
+        && request.resource.data.createdAt == resource.data.createdAt
+        && validRecurring();
+      allow delete: if ownsExistingRecord();
+    }
+  }
+}
