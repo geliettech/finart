@@ -3,13 +3,33 @@ import { details, features } from "../constants/index.jsx";
 import { Button } from "@/components/ui/button";
 import { Marker } from "./Marker.jsx";
 
-
 const Features = () => {
   return (
     <section>
       <Element name="features">
-        <div className="container">
-          <div className="grid gap-6 md:grid-cols-2">
+        <div className="web-container">
+          <div className="pt-24 sm:pt-28 lg:pt-36 bg-background">
+            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
+              {details.map((detail) => (
+                <div
+                  key={detail.id}
+                  className="relative rounded-3xl border-2 border-border bg-card p-6 text-center"
+                >
+                  <div className="flex items-center justify-center mx-auto mb-4 border-2 border-border rounded-full transition-all duration-500 shadow-400 size-20">
+                    <img
+                      src={detail.icon}
+                      alt={detail.title}
+                      className="size-17/20 object-contain z-20"
+                    />
+                  </div>
+                  <h3 className="base-small uppercase tracking-[0.2em] text-foreground">
+                    {detail.title}
+                  </h3>
+                </div>
+              ))}
+            </div>
+          </div>
+          <div className="grid gap-6 md:grid-cols-2 py-24 sm:py-28 lg:py-36">
             {features.map((feature) => (
               <div
                 key={feature.id}
@@ -37,7 +57,10 @@ const Features = () => {
                   aria-label={feature.button.title}
                 >
                   <span className="absolute -left-px">
-                    <Marker fill="currentColor" className="text-secondary size-5 z-10" />
+                    <Marker
+                      fill="currentColor"
+                      className="text-secondary size-5 z-10"
+                    />
                   </span>
                   <img
                     src={feature.button.icon}
@@ -48,28 +71,6 @@ const Features = () => {
                 </Button>
               </div>
             ))}
-          </div>
-
-          <div className="mt-10 rounded-7xl border-2 border-s3 bg-background p-6 md:p-8">
-            <div className="grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-              {details.map((detail) => (
-                <div
-                  key={detail.id}
-                  className="relative rounded-3xl border-2 border-border bg-card p-6 text-center"
-                >
-                  <div className="flex items-center justify-center mx-auto mb-4 border-2 border-border rounded-full transition-all duration-500 shadow-400 size-20">
-                    <img
-                      src={detail.icon}
-                      alt={detail.title}
-                      className="size-17/20 object-contain z-20"
-                    />
-                  </div>
-                  <h3 className="base-small uppercase tracking-[0.2em] text-foreground">
-                    {detail.title}
-                  </h3>
-                </div>
-              ))}
-            </div>
           </div>
         </div>
       </Element>
