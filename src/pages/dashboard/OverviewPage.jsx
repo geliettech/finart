@@ -93,12 +93,12 @@ const OverviewPage = () => {
                       <div key={item.month} className="flex h-full min-w-0 flex-1 items-end justify-center gap-1.5">
                         <div
                           title={`${item.label} income: ${formatMoney(item.income, currency)}`}
-                          className="w-full max-w-7 rounded-t-md bg-[#174b38] dark:bg-[#d0e7ad]"
+ className="w-full max-w-7 rounded-t-md bg-brand "
                           style={{ height: `${Math.max(item.income > 0 ? 4 : 0, (item.income / maxValue) * 100)}%` }}
                         />
                         <div
                           title={`${item.label} expenses: ${formatMoney(item.expenses, currency)}`}
-                          className="w-full max-w-7 rounded-t-md bg-[#bdd0ad]"
+ className="w-full max-w-7 rounded-t-md bg-accent"
                           style={{ height: `${Math.max(item.expenses > 0 ? 4 : 0, (item.expenses / maxValue) * 100)}%` }}
                         />
                       </div>
@@ -108,8 +108,8 @@ const OverviewPage = () => {
                     {cashflow.map((item) => <span key={item.month}>{item.label}</span>)}
                   </div>
                   <div className="mt-4 flex flex-wrap gap-4 text-xs text-muted-foreground">
-                    <span className="inline-flex items-center gap-2"><i className="size-2.5 rounded-sm bg-[#174b38] dark:bg-[#d0e7ad]" /> Income</span>
-                    <span className="inline-flex items-center gap-2"><i className="size-2.5 rounded-sm bg-[#bdd0ad]" /> Expenses</span>
+ <span className="inline-flex items-center gap-2"><i className="size-2.5 rounded-sm bg-brand " /> Income</span>
+ <span className="inline-flex items-center gap-2"><i className="size-2.5 rounded-sm bg-accent" /> Expenses</span>
                   </div>
                   <p className="sr-only">
                     {cashflow.map((item) => `${item.label}: income ${formatMoney(item.income, currency)}, expenses ${formatMoney(item.expenses, currency)}`).join("; ")}
@@ -133,7 +133,7 @@ const OverviewPage = () => {
                           <span className="shrink-0 text-muted-foreground">{formatMoney(amount, currency)}</span>
                         </div>
                         <div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-label={`${category} share of spending`} aria-valuenow={Math.round(percent)} aria-valuemin={0} aria-valuemax={100}>
-                          <div className="h-full rounded-full bg-[#5d8550]" style={{ width: `${percent}%` }} />
+ <div className="h-full rounded-full bg-muted" style={{ width: `${percent}%` }} />
                         </div>
                       </li>
                     );
@@ -177,7 +177,7 @@ const OverviewPage = () => {
                           </span>
                         </div>
                         <div className="mt-2 h-2 rounded-full bg-muted">
-                          <div className={`h-2 rounded-full ${state.exceeded ? "bg-destructive" : state.approaching ? "bg-amber-500" : "bg-[#5d8550]"}`} style={{ width: `${state.percentage}%` }} />
+ <div className={`h-2 rounded-full ${state.exceeded ? "bg-destructive" : state.approaching ? "bg-status-warning-surface" : "bg-muted"}`} style={{ width: `${state.percentage}%` }} />
                         </div>
                         <p className="mt-1 text-xs text-muted-foreground">{formatMoney(spent, currency)} of {formatMoney(budget.amount, currency)}</p>
                       </li>

@@ -45,23 +45,23 @@ const StaffSettingsPage = () => {
       <div className="grid gap-5 xl:grid-cols-2">
         <StaffPanel title="Staff profile" description="Profile details from the signed-in Firebase Authentication account.">
           <div className="mb-5 mt-4 flex items-center gap-3 rounded-xl bg-muted/50 p-4">
-            <span className="flex size-11 items-center justify-center rounded-full bg-[#e9f1e4] text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]"><UserRound aria-hidden="true" size={20} /></span>
-            <div className="min-w-0"><p className="truncate font-medium">{user?.email}</p><p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Check aria-hidden="true" size={13} className="text-emerald-600" /> Verified account · staff claim confirmed</p></div>
+ <span className="flex size-11 items-center justify-center rounded-full bg-secondary text-primary "><UserRound aria-hidden="true" size={20} /></span>
+ <div className="min-w-0"><p className="truncate font-medium">{user?.email}</p><p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Check aria-hidden="true" size={13} className="text-status-success" /> Verified account · staff claim confirmed</p></div>
           </div>
           <form onSubmit={saveName} className="space-y-4">
             <div className="space-y-1.5">
               <label htmlFor="staff-display-name" className="text-sm font-medium">Display name</label>
-              <input id="staff-display-name" required minLength={2} maxLength={100} value={name} onChange={(event) => setName(event.target.value)} className="min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42]" />
+ <input id="staff-display-name" required minLength={2} maxLength={100} value={name} onChange={(event) => setName(event.target.value)} className="min-h-11 w-full rounded-xl border border-input bg-background px-3 text-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring" />
             </div>
-            <button type="submit" disabled={saving || name.trim() === (user?.displayName || "")} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#174b38] px-4 text-sm font-semibold text-white disabled:opacity-60">{saving ? "Saving…" : "Save profile"}</button>
+ <button type="submit" disabled={saving || name.trim() === (user?.displayName || "")} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-brand px-4 text-sm font-semibold text-brand-foreground disabled:opacity-60">{saving ? "Saving…" : "Save profile"}</button>
           </form>
         </StaffPanel>
         <StaffPanel title="Preferences and security" description="Appearance is shared with the existing FINART theme setting.">
           <div className="mt-4">
             <p className="text-sm font-medium">Appearance</p>
             <div className="mt-3 flex gap-2">
-              <button type="button" onClick={setLight} aria-pressed={theme === "light"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "light" ? "border-[#174b38] bg-[#e9f1e4] text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]" : "border-border"}`}><Sun aria-hidden="true" size={16} /> Light</button>
-              <button type="button" onClick={setDark} aria-pressed={theme === "dark"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "dark" ? "border-[#174b38] bg-[#e9f1e4] text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]" : "border-border"}`}><Moon aria-hidden="true" size={16} /> Dark</button>
+ <button type="button" onClick={setLight} aria-pressed={theme === "light"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "light" ? "border-primary bg-secondary text-primary " : "border-border"}`}><Sun aria-hidden="true" size={16} /> Light</button>
+ <button type="button" onClick={setDark} aria-pressed={theme === "dark"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "dark" ? "border-primary bg-secondary text-primary " : "border-border"}`}><Moon aria-hidden="true" size={16} /> Dark</button>
             </div>
           </div>
           <div className="mt-5 border-t border-border pt-4">

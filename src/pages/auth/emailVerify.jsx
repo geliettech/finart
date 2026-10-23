@@ -37,8 +37,8 @@ const EmailVerifyPage = () => {
 
   if (loading) {
     return (
-      <main className="flex min-h-screen items-center justify-center bg-[#f7f8f4] dark:bg-[#111a16]" role="status">
-        <span className="size-8 animate-spin rounded-full border-2 border-[#d9e4d5] border-t-[#174b38] dark:border-white/20 dark:border-t-[#d0e7ad]" />
+ <main className="flex min-h-screen items-center justify-center bg-background " role="status">
+ <span className="size-8 animate-spin rounded-full border-2 border-border border-t-primary " />
         <span className="sr-only">Checking verification status</span>
       </main>
     );
@@ -99,25 +99,25 @@ const EmailVerifyPage = () => {
       imgTitle="Your account is almost ready."
       imgSubtitle="Verify the email address you used to sign up to help keep your account connected to you."
     >
-      <div className="rounded-2xl border border-[#dce7d7] bg-[#f2f6ef] p-5 dark:border-white/10 dark:bg-white/5">
-        <MailCheck aria-hidden="true" size={26} className="text-[#47704b] dark:text-[#d0e7ad]" />
+ <div className="rounded-2xl border border-border bg-surface-subtle p-5 ">
+ <MailCheck aria-hidden="true" size={26} className="text-primary " />
         <p className="mt-4 text-sm leading-6">
           We sent a verification link to{" "}
           <span className="break-all font-semibold">{user.email}</span>. Check your inbox and spam folder.
         </p>
       </div>
 
-      <p className="mt-5 text-sm leading-6 text-[#68766b] dark:text-[#bdc9bf]">
+ <p className="mt-5 text-sm leading-6 text-muted-foreground ">
         If the link has expired or does not work, request a new one below. Verification is confirmed by Firebase; opening this page alone does not verify your account.
       </p>
 
       {statusMessage && (
-        <p className="mt-4 rounded-xl bg-[#f2f6ef] p-3 text-sm leading-6 text-[#315b3c] dark:bg-white/5 dark:text-[#d0e7ad]" role="status" aria-live="polite">
+ <p className="mt-4 rounded-xl bg-surface-subtle p-3 text-sm leading-6 text-primary " role="status" aria-live="polite">
           {statusMessage}
         </p>
       )}
       {errorMessage && (
-        <p className="mt-4 rounded-xl bg-red-50 p-3 text-sm leading-6 text-red-800 dark:bg-red-950/30 dark:text-red-200" role="alert">
+ <p className="mt-4 rounded-xl bg-destructive/10 p-3 text-sm leading-6 text-destructive " role="alert">
           {errorMessage}
         </p>
       )}
@@ -127,7 +127,7 @@ const EmailVerifyPage = () => {
           type="button"
           onClick={handleCheckStatus}
           disabled={busy}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-[#174b38] px-5 py-3 font-semibold text-white transition hover:bg-[#103b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60"
+ className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 font-semibold text-brand-foreground transition hover:bg-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60"
         >
           <Check aria-hidden="true" size={18} />
           {busy ? "Checking…" : "I've verified my email"}
@@ -136,7 +136,7 @@ const EmailVerifyPage = () => {
           type="button"
           onClick={handleResend}
           disabled={busy || cooldown > 0}
-          className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-[#d8e2d5] px-5 py-3 font-semibold transition hover:bg-[#f3f6f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:hover:bg-white/10"
+ className="inline-flex min-h-12 items-center justify-center gap-2 rounded-full border border-border px-5 py-3 font-semibold transition hover:bg-surface-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60 "
         >
           <RefreshCw aria-hidden="true" size={17} />
           {busy ? "Please wait…" : cooldown > 0 ? `Resend available in ${cooldown}s` : "Resend verification email"}
@@ -148,7 +148,7 @@ const EmailVerifyPage = () => {
           type="button"
           onClick={handleLogout}
           disabled={busy}
-          className="min-h-10 rounded-sm font-medium text-[#68766b] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] disabled:opacity-60 dark:text-[#bdc9bf]"
+ className="min-h-10 rounded-sm font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:opacity-60 "
         >
           Sign out
         </button>
@@ -158,7 +158,7 @@ const EmailVerifyPage = () => {
             event.preventDefault();
             await handleLogout();
           }}
-          className="inline-flex min-h-10 items-center rounded-sm font-medium text-[#68766b] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:text-[#bdc9bf]"
+ className="inline-flex min-h-10 items-center rounded-sm font-medium text-muted-foreground underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring "
         >
           Return to login
         </Link>

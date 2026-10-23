@@ -60,8 +60,8 @@ const AdvisorPage = () => {
             <div className="max-h-[28rem] space-y-5 overflow-y-auto" aria-live="polite">
               {conversation.map((item, index) => (
                 <article key={`${index}-${item.question}`} className="space-y-3">
-                  <div className="ml-auto max-w-[90%] rounded-2xl rounded-tr-sm bg-[#e9f1e4] p-4 text-sm dark:bg-[#2a4032]">
-                    <p className="text-xs font-semibold text-[#456a40] dark:text-[#d0e7ad]">You</p>
+ <div className="ml-auto max-w-[90%] rounded-2xl rounded-tr-sm bg-secondary p-4 text-sm ">
+ <p className="text-xs font-semibold text-primary ">You</p>
                     <p className="mt-1 leading-6">{item.question}</p>
                   </div>
                   <div className="max-w-[90%] rounded-2xl rounded-tl-sm bg-muted p-4 text-sm">

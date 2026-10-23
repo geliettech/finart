@@ -102,7 +102,7 @@ const DashboardShell = () => {
         onClick={onNavigate}
         className="flex h-[72px] items-center gap-3 border-b border-sidebar-border px-5 font-semibold tracking-tight"
       >
-        <span className="flex size-9 items-center justify-center rounded-xl bg-[#174b38] text-[#d0e7ad]">
+ <span className="flex size-9 items-center justify-center rounded-xl bg-brand text-primary">
           <Wallet aria-hidden="true" size={20} />
         </span>
         FINART
@@ -116,9 +116,9 @@ const DashboardShell = () => {
             end={end}
             onClick={onNavigate}
             className={({ isActive }) =>
-              `flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42] ${
+ `flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring ${
                 isActive
-                  ? "bg-[#e9f1e4] text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]"
+ ? "bg-secondary text-primary "
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`
             }
@@ -133,7 +133,7 @@ const DashboardShell = () => {
           type="button"
           onClick={handleLogout}
           disabled={loggingOut}
-          className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42] disabled:opacity-60"
+ className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60"
         >
           <X aria-hidden="true" size={18} />
           {loggingOut ? "Signing out…" : "Sign out"}
@@ -143,8 +143,8 @@ const DashboardShell = () => {
   );
 
   return (
-    <div className="min-h-screen bg-[#f5f7f3] text-foreground dark:bg-[#111a16]">
-      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-card lg:flex">
+ <div className="min-h-screen bg-background text-foreground ">
+ <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar lg:flex">
         <SidebarContent />
       </aside>
 
@@ -152,7 +152,7 @@ const DashboardShell = () => {
         <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
-            className="absolute inset-0 bg-black/40"
+ className="absolute inset-0 bg-overlay/40"
             aria-label="Close navigation menu"
             onClick={() => setMobileOpen(false)}
           />
@@ -160,7 +160,7 @@ const DashboardShell = () => {
             <div className="absolute right-3 top-4 z-10">
               <button
                 type="button"
-                className="flex size-10 items-center justify-center rounded-xl hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42]"
+ className="flex size-10 items-center justify-center rounded-xl hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close navigation"
               >
@@ -173,14 +173,14 @@ const DashboardShell = () => {
       )}
 
       <div className="min-h-screen lg:pl-64">
-        <header className="sticky top-0 z-20 border-b border-border bg-background/95 backdrop-blur">
+        <header className="sticky top-0 z-20 border-b border-border bg-sidebar backdrop-blur">
           <div className="flex min-h-[72px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
             <div className="flex min-w-0 items-center gap-3">
               <button
                 type="button"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open dashboard navigation"
-                className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42] lg:hidden"
+ className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring lg:hidden"
               >
                 <Menu aria-hidden="true" size={19} />
               </button>
@@ -207,7 +207,7 @@ const DashboardShell = () => {
               <button
                 type="button"
                 onClick={toggleTheme}
-                className="flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42]"
+ className="flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
               >
                 {theme === "dark" ? <Sun aria-hidden="true" size={18} /> : <Moon aria-hidden="true" size={18} />}
@@ -218,10 +218,10 @@ const DashboardShell = () => {
                   onClick={() => setNotificationsOpen((open) => !open)}
                   aria-expanded={notificationsOpen}
                   aria-label={`Notifications, ${notifications.length} items`}
-                  className="relative flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42]"
+ className="relative flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
                 >
                   <Bell aria-hidden="true" size={18} />
-                  {notifications.length > 0 && <span aria-hidden="true" className="absolute right-2 top-2 size-2 rounded-full bg-amber-500" />}
+ {notifications.length > 0 && <span aria-hidden="true" className="absolute right-2 top-2 size-2 rounded-full bg-status-warning-surface" />}
                 </button>
                 {notificationsOpen && (
                   <div className="absolute right-0 top-12 z-40 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-4 shadow-xl">
@@ -248,9 +248,9 @@ const DashboardShell = () => {
                   onClick={() => setProfileOpen((open) => !open)}
                   aria-expanded={profileOpen}
                   aria-label="Open user menu"
-                  className="flex min-h-10 items-center gap-2 rounded-xl border border-border px-2 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42] sm:px-3"
+ className="flex min-h-10 items-center gap-2 rounded-xl border border-border px-2 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:px-3"
                 >
-                  <span className="flex size-7 items-center justify-center rounded-full bg-[#e9f1e4] text-xs font-semibold text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]">
+ <span className="flex size-7 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-primary ">
                     {(user?.name || user?.email || "F").charAt(0).toUpperCase()}
                   </span>
                   <span className="hidden max-w-28 truncate text-sm font-medium xl:block">{user?.name || user?.email}</span>

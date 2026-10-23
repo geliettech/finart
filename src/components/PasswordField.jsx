@@ -27,7 +27,7 @@ const PasswordField = ({
         onClick={() => setVisible((current) => !current)}
         aria-label={visible ? "Hide password" : "Show password"}
         aria-pressed={visible}
-        className="absolute right-1 top-1 flex size-10 items-center justify-center rounded-lg text-[#68766b] transition hover:bg-[#edf3e9] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42] dark:text-[#bdc9bf] dark:hover:bg-white/10"
+ className="absolute right-1 top-1 flex size-10 items-center justify-center rounded-lg text-muted-foreground transition hover:bg-surface-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring "
       >
         {visible ? (
           <EyeOff aria-hidden="true" size={18} />

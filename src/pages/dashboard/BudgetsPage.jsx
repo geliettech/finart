@@ -132,7 +132,7 @@ const BudgetsPage = () => {
                     aria-valuemax={100}
                   >
                     <div
-                      className={`h-full rounded-full ${state.exceeded ? "bg-destructive" : state.approaching ? "bg-amber-500" : "bg-[#5d8550]"}`}
+ className={`h-full rounded-full ${state.exceeded ? "bg-destructive" : state.approaching ? "bg-status-warning-surface" : "bg-muted"}`}
                       style={{ width: `${state.percentage}%` }}
                     />
                   </div>
@@ -153,7 +153,7 @@ const BudgetsPage = () => {
       </div>
 
       {editing !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/45 p-4">
+ <div className="fixed inset-0 z-50 flex items-center justify-center bg-overlay/45 p-4">
           <section role="dialog" aria-modal="true" aria-labelledby="budget-dialog-title" className="w-full max-w-lg rounded-2xl border border-border bg-card p-6 shadow-2xl">
             <div className="mb-5 flex items-start justify-between">
               <div>

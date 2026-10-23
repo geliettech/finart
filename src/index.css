@@ -5,117 +5,105 @@
 /* @import "@fontsource-variable/geist"; */
 
 @custom-variant dark (&:is(.dark *));
-/* @custom-variant dark (&:where(.dark, .dark *)); */
 
 /* =========================
    Theme Variables
 ========================= */
 
 :root {
-  /* Core */
-  --background: rgba(255, 255, 255, 1);
-  --foreground: rgba(14, 37, 79, 1);
-
-  /* Surface */
-  --card: rgba(255, 255, 255, 1);
-  --card-foreground: rgba(14, 37, 79, 1);
-
-  --popover: rgba(255, 255, 255, 1);
-  --popover-foreground: rgba(14, 37, 79, 1);
-
-  /* Brand */
-  --primary: rgba(14, 37, 79, 1);
-  --primary-foreground: rgba(255, 255, 255, 1);
-
-  --secondary: rgba(97, 197, 142, 1); /* s1 */
-  --secondary-foreground: rgba(14, 37, 79, 1);
-
-  /* UI */
-  --muted: rgba(233, 238, 240, 1);
-  --muted-foreground: rgba(134, 134, 134, 1);
-
-  --accent: rgba(87, 182, 145, 1); /* s2 */
-  --accent-foreground: rgba(255, 255, 255, 1);
-
-  --destructive: rgba(253, 3, 3, 1);
-
-  --border: rgba(233, 238, 240, 1);
-  --input: rgba(233, 238, 240, 1);
-  --ring: rgba(56, 118, 139, 0.4);
-
-  /* Charts */
-  --chart-1: rgba(56, 118, 139, 1);
-  --chart-2: rgba(97, 197, 142, 1);
-  --chart-3: rgba(26, 92, 138, 1);
-  --chart-4: rgba(67, 166, 145, 1);
-  --chart-5: rgba(14, 37, 79, 1);
+  --background: #ffffff;
+  --foreground: #18352a;
+  --card: #f7f9f6;
+  --card-foreground: #18352a;
+  --popover: #ffffff;
+  --popover-foreground: #18352a;
+  --primary: #174b38;
+  --primary-foreground: #ffffff;
+  --secondary: #e9f1e4;
+  --secondary-foreground: #174b38;
+  --muted: #eff3ed;
+  --muted-foreground: #5c6b60;
+  --accent: #d0e7ad;
+  --accent-foreground: #18352a;
+  --destructive: #b42318;
+  --destructive-foreground: #ffffff;
+  --border: #dfe7dc;
+  --input: #dfe7dc;
+  --ring: #4d7c42;
+  --chart-1: #174b38;
+  --chart-2: #5d8550;
+  --chart-3: #d5a958;
+  --chart-4: #64804f;
+  --chart-5: #526157;
+  --brand: #174b38;
+  --brand-foreground: #ffffff;
+  --surface-subtle: #f2f6ef;
+  --surface-raised: #fbfcfa;
+  --surface-overlay: #ffffff;
+  --overlay: #18352a;
+  --text-subtle: #68766b;
+  --status-success: #267348;
+  --status-success-surface: #e8f3eb;
+  --status-warning: #8a5a00;
+  --status-warning-surface: #fff4d6;
+  --status-info: #315b3c;
+  --google-brand: #4285f4;
 
   --radius: 0.625rem;
 
-  /* Sidebar */
-  --sidebar: rgba(255, 255, 255, 1);
-  --sidebar-foreground: rgba(14, 37, 79, 1);
-
-  --sidebar-primary: rgba(56, 118, 139, 1);
-  --sidebar-primary-foreground: rgba(255, 255, 255, 1);
-
-  --sidebar-accent: rgba(97, 197, 142, 1);
-  --sidebar-accent-foreground: rgba(14, 37, 79, 1);
-
-  --sidebar-border: rgba(233, 238, 240, 1);
-  --sidebar-ring: rgba(56, 118, 139, 0.4);
+  --sidebar: #f7f9f6;
+  --sidebar-foreground: #18352a;
+  --sidebar-primary: #174b38;
+  --sidebar-primary-foreground: #ffffff;
+  --sidebar-accent: #e9f1e4;
+  --sidebar-accent-foreground: #174b38;
+  --sidebar-border: #dfe7dc;
+  --sidebar-ring: #4d7c42;
 }
+
 .dark {
-  /* Core */
-  --background: rgba(14, 37, 79, 1); /* p4 */
-  --foreground: rgba(255, 255, 255, 1);
-
-  /* Surface */
-  --card: rgba(21, 80, 137, 1); /* p3 */
-  --card-foreground: rgba(255, 255, 255, 1);
-
-  --popover: rgba(21, 80, 137, 1);
-  --popover-foreground: rgba(255, 255, 255, 1);
-
-  /* Brand */
-  --primary: rgba(97, 197, 142, 1); /* s1 */
-  --primary-foreground: rgba(14, 37, 79, 1);
-
-  --secondary: rgba(48, 149, 148, 1); /* s4 */
-  --secondary-foreground: rgba(255, 255, 255, 1);
-
-  /* UI */
-  --muted: rgba(21, 80, 137, 1);
-  --muted-foreground: rgba(233, 238, 240, 1);
-
-  --accent: rgba(67, 166, 145, 1); /* s3 */
-  --accent-foreground: rgba(255, 255, 255, 1);
-
-  --destructive: rgba(253, 3, 3, 1);
-
-  --border: rgba(67, 166, 145, 1);
-  --input: rgba(255, 255, 255, 0.15);
-  --ring: rgba(97, 197, 142, 0.4);
-
-  /* Charts */
-  --chart-1: rgba(97, 197, 142, 1);
-  --chart-2: rgba(56, 118, 139, 1);
-  --chart-3: rgba(67, 166, 145, 1);
-  --chart-4: rgba(26, 92, 138, 1);
-  --chart-5: rgba(233, 238, 240, 1);
-
-  /* Sidebar */
-  --sidebar: rgba(14, 37, 79, 1);
-  --sidebar-foreground: rgba(255, 255, 255, 1);
-
-  --sidebar-primary: rgba(97, 197, 142, 1);
-  --sidebar-primary-foreground: rgba(14, 37, 79, 1);
-
-  --sidebar-accent: rgba(48, 149, 148, 1);
-  --sidebar-accent-foreground: rgba(255, 255, 255, 1);
-
-  --sidebar-border: rgba(255, 255, 255, 0.1);
-  --sidebar-ring: rgba(97, 197, 142, 0.4);
+  --background: #111a16;
+  --foreground: #edf4ee;
+  --card: #1b2821;
+  --card-foreground: #edf4ee;
+  --popover: #202e26;
+  --popover-foreground: #edf4ee;
+  --primary: #a8d58b;
+  --primary-foreground: #18352a;
+  --secondary: #2a4032;
+  --secondary-foreground: #d0e7ad;
+  --muted: #26362c;
+  --muted-foreground: #bdc9bf;
+  --accent: #d0e7ad;
+  --accent-foreground: #18352a;
+  --destructive: #f87171;
+  --destructive-foreground: #1f1010;
+  --border: #34463a;
+  --input: #34463a;
+  --ring: #a8d58b;
+  --chart-1: #a8d58b;
+  --chart-2: #8bb467;
+  --chart-3: #e5bd67;
+  --chart-4: #c4dd9e;
+  --chart-5: #aebcb1;
+  --surface-subtle: #203126;
+  --surface-raised: #26362c;
+  --surface-overlay: #1b2821;
+  --overlay: #000000;
+  --text-subtle: #bdc9bf;
+  --status-success: #8bd6a1;
+  --status-success-surface: #193526;
+  --status-warning: #f0c66a;
+  --status-warning-surface: #3a301b;
+  --status-info: #cde4ad;
+  --sidebar: #1b2821;
+  --sidebar-foreground: #edf4ee;
+  --sidebar-primary: #a8d58b;
+  --sidebar-primary-foreground: #18352a;
+  --sidebar-accent: #2a4032;
+  --sidebar-accent-foreground: #d0e7ad;
+  --sidebar-border: #34463a;
+  --sidebar-ring: #a8d58b;
 }
 
 @theme inline {
@@ -139,6 +127,7 @@
   --color-input: var(--input);
   --color-border: var(--border);
   --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
   --color-accent-foreground: var(--accent-foreground);
   --color-accent: var(--accent);
   --color-muted-foreground: var(--muted-foreground);
@@ -153,6 +142,19 @@
   --color-card: var(--card);
   --color-foreground: var(--foreground);
   --color-background: var(--background);
+  --color-brand: var(--brand);
+  --color-brand-foreground: var(--brand-foreground);
+  --color-surface-subtle: var(--surface-subtle);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-overlay: var(--surface-overlay);
+  --color-overlay: var(--overlay);
+  --color-text-subtle: var(--text-subtle);
+  --color-status-success: var(--status-success);
+  --color-status-success-surface: var(--status-success-surface);
+  --color-status-warning: var(--status-warning);
+  --color-status-warning-surface: var(--status-warning-surface);
+  --color-status-info: var(--status-info);
+  --color-google-brand: var(--google-brand);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -160,25 +162,19 @@
   --radius-2xl: calc(var(--radius) * 1.8);
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
-  /* Status */
-  --color-success: rgba(2, 255, 150, 1);
-  --color-error: rgba(253, 3, 3, 1);
-  --color-warning: rgba(250, 234, 4, 1);
-  --color-neutral: rgba(134, 134, 134, 1);
-
   /* Box Shadows */
   --shadow-100:
-    0px 4px 4px rgba(0, 0, 0, 0.25), 0px 16px 24px rgba(0, 0, 0, 0.25),
-    inset 0px 3px 6px #57b691;
+    0px 4px 4px #00000040, 0px 16px 24px #00000040,
+    inset 0px 3px 6px var(--brand);
 
   --shadow-200:
-    0px 4px 4px rgba(0, 0, 0, 0.25), 0px 16px 24px rgba(0, 0, 0, 0.25),
-    inset 0px 4px 10px #1a5c8a;
+    0px 4px 4px #00000040, 0px 16px 24px #00000040,
+    inset 0px 4px 10px var(--chart-2);
 
-  --shadow-300: inset 0px 2px 4px 0 rgba(255, 255, 255, 0.05);
+  --shadow-300: inset 0px 2px 4px 0 #ffffff0d;
 
   --shadow-400:
-    0px 16px 24px rgba(0, 0, 0, 0.25), 0px -14px 48px rgba(40, 51, 111, 0.7);
+    0px 16px 24px #00000040, 0px -14px 48px var(--brand);
 
   /* Z-index */
   --z-1: 1;

@@ -3,11 +3,11 @@ import { useAuth } from "@/layout/context/authProvider";
 
 export const AuthLoading = () => (
   <main
-    className="flex min-h-screen items-center justify-center bg-[#f7f8f4] px-6 text-[#18352a] dark:bg-[#111a16] dark:text-white"
+ className="flex min-h-screen items-center justify-center bg-background px-6 text-foreground "
     role="status"
     aria-live="polite"
   >
-    <span className="size-8 animate-spin rounded-full border-2 border-[#d9e4d5] border-t-[#174b38] dark:border-white/20 dark:border-t-[#d0e7ad]" />
+ <span className="size-8 animate-spin rounded-full border-2 border-border border-t-primary " />
     <span className="sr-only">Checking your sign-in status</span>
   </main>
 );

@@ -36,10 +36,10 @@ const ForgotPasswordPage = () => {
       imgSubtitle="Request a secure password reset link and return to your financial overview."
     >
       {requestSent ? (
-        <div className="rounded-2xl border border-[#dce7d7] bg-[#f2f6ef] p-5 dark:border-white/10 dark:bg-white/5" role="status" aria-live="polite">
-          <MailCheck aria-hidden="true" size={25} className="text-[#47704b] dark:text-[#d0e7ad]" />
+ <div className="rounded-2xl border border-border bg-surface-subtle p-5 " role="status" aria-live="polite">
+ <MailCheck aria-hidden="true" size={25} className="text-primary " />
           <h2 className="mt-3 font-semibold">Check your inbox</h2>
-          <p className="mt-2 text-sm leading-6 text-[#68766b] dark:text-[#bdc9bf]">
+ <p className="mt-2 text-sm leading-6 text-muted-foreground ">
             If an account is associated with that email address, password reset instructions are on their way. Check your spam folder too.
           </p>
         </div>
@@ -73,7 +73,7 @@ const ForgotPasswordPage = () => {
           <button
             type="submit"
             disabled={form.formState.isSubmitting}
-            className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#174b38] px-5 py-3 font-semibold text-white transition hover:bg-[#103b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60"
+ className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 font-semibold text-brand-foreground transition hover:bg-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60"
           >
             {form.formState.isSubmitting ? "Sending instructions…" : "Send reset link"}
           </button>
@@ -81,7 +81,7 @@ const ForgotPasswordPage = () => {
       )}
 
       <p className="mt-6 text-center">
-        <Link to="/sign-in" className="inline-flex min-h-10 items-center gap-2 rounded-sm text-sm font-semibold text-[#174b38] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:text-[#d0e7ad]">
+ <Link to="/sign-in" className="inline-flex min-h-10 items-center gap-2 rounded-sm text-sm font-semibold text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring ">
           <ArrowLeft aria-hidden="true" size={16} /> Back to log in
         </Link>
       </p>

@@ -130,7 +130,7 @@ const RecurringPage = () => {
                   <div className="min-w-0">
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="truncate font-semibold">{item.description}</h2>
-                      <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium capitalize ${item.status === "active" ? "bg-emerald-100 text-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-200" : "bg-muted text-muted-foreground"}`}>{item.status}</span>
+ <span className={`rounded-full px-2 py-0.5 text-[11px] font-medium capitalize ${item.status === "active" ? "bg-status-success-surface text-status-success " : "bg-muted text-muted-foreground"}`}>{item.status}</span>
                     </div>
                     <p className="mt-1 text-sm text-muted-foreground">{item.category} · {item.transactionType} · {item.frequency}</p>
                     <p className="mt-1 text-xs text-muted-foreground">
@@ -158,7 +158,7 @@ const RecurringPage = () => {
       </Panel>
 
       {editing !== null && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/45 p-4">
+ <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-overlay/45 p-4">
           <section role="dialog" aria-modal="true" aria-labelledby="recurring-dialog-title" className="my-auto w-full max-w-xl rounded-2xl border border-border bg-card p-6 shadow-2xl">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>

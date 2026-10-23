@@ -4,7 +4,7 @@ export const PageHeader = ({ eyebrow, title, description, action }) => (
   <div className="mb-7 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
     <div>
       {eyebrow && (
-        <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-[#64804f] dark:text-[#c4dd9e]">
+ <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-primary ">
           {eyebrow}
         </p>
       )}
@@ -39,7 +39,7 @@ export const MetricCard = ({ label, value, detail, icon: Icon }) => (
     <div className="flex items-center justify-between gap-3">
       <p className="text-sm font-medium text-muted-foreground">{label}</p>
       {Icon && (
-        <span className="flex size-9 items-center justify-center rounded-xl bg-[#edf3e9] text-[#315b3c] dark:bg-[#2a3e30] dark:text-[#cde4ad]">
+ <span className="flex size-9 items-center justify-center rounded-xl bg-surface-subtle text-primary ">
           <Icon aria-hidden="true" size={18} />
         </span>
       )}
@@ -87,7 +87,7 @@ export const dashboardInputClass =
   "min-h-11 w-full rounded-xl border border-input bg-background px-3 py-2 text-sm outline-none transition focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-60";
 
 export const primaryButtonClass =
-  "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#174b38] px-4 py-2 text-sm font-semibold text-white transition hover:bg-[#103b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60";
+ "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground transition hover:bg-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60";
 
 export const secondaryButtonClass =
-  "inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium transition hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60";
+ "inline-flex min-h-10 items-center justify-center gap-2 rounded-xl border border-border bg-card px-3 py-2 text-sm font-medium transition hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60";

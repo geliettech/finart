@@ -21,6 +21,14 @@ export const ThemeProvider = ({ children }) => {
         document.documentElement.classList.remove("light", "dark");
         document.documentElement.classList.add(newTheme);
 
+        const themeColor = getComputedStyle(document.documentElement)
+            .getPropertyValue("--background")
+            .trim();
+        const themeColorMeta = document.querySelector('meta[name="theme-color"]');
+        if (themeColorMeta) {
+            themeColorMeta.setAttribute("content", themeColor);
+        }
+
         // Save preference
         localStorage.setItem("theme", newTheme);
     };

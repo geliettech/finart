@@ -65,7 +65,7 @@ const StaffRoute = ({ children }) => {
       <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
         <h1 className="text-2xl font-semibold">Staff access could not be verified</h1>
         <p className="text-sm text-muted-foreground" role="alert">{claimState.error}</p>
-        <button type="button" onClick={verifyStaffClaim} className="rounded-xl bg-[#174b38] px-4 py-2 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42]">
+ <button type="button" onClick={verifyStaffClaim} className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
           Try again
         </button>
         <button type="button" onClick={handleLogout} className="text-sm font-medium text-muted-foreground underline">
@@ -78,13 +78,13 @@ const StaffRoute = ({ children }) => {
   if (claimState.status !== "staff") {
     return (
       <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
-        <p className="text-xs font-semibold uppercase tracking-[0.16em] text-[#64804f]">403 · Forbidden</p>
+ <p className="text-xs font-semibold uppercase tracking-[0.16em] text-primary">403 · Forbidden</p>
         <h1 className="text-2xl font-semibold">Staff access required</h1>
         <p className="text-sm leading-6 text-muted-foreground">
           This account is signed in, but Firebase did not confirm the trusted staff authorization claim.
         </p>
         <div className="flex flex-wrap justify-center gap-3">
-          <Link to="/dashboard" className="rounded-xl bg-[#174b38] px-4 py-2 text-sm font-semibold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42]">
+ <Link to="/dashboard" className="rounded-xl bg-brand px-4 py-2 text-sm font-semibold text-brand-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
             Go to your dashboard
           </Link>
           <button type="button" onClick={handleLogout} className="rounded-xl border border-border px-4 py-2 text-sm font-medium">

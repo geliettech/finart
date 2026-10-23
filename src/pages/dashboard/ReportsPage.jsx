@@ -97,8 +97,8 @@ const ReportsPage = () => {
 
         <Panel title="Export formats" description="Available formats depend on the installed project tooling.">
           <div className="space-y-3">
-            <div className="flex items-center gap-3 rounded-xl border border-[#cfe0c5] bg-[#f2f6ef] p-4 dark:border-[#3e6044] dark:bg-[#203126]">
-              <FileText aria-hidden="true" size={20} className="text-[#315b3c] dark:text-[#d0e7ad]" />
+ <div className="flex items-center gap-3 rounded-xl border border-border bg-surface-subtle p-4 ">
+ <FileText aria-hidden="true" size={20} className="text-primary " />
               <div><p className="text-sm font-semibold">CSV</p><p className="text-xs text-muted-foreground">Available · generated in your browser</p></div>
             </div>
             <div className="rounded-xl border border-border p-4 opacity-75"><p className="text-sm font-semibold">Excel (.xlsx)</p><p className="mt-1 text-xs text-muted-foreground">Unavailable: this project has no spreadsheet export dependency.</p></div>

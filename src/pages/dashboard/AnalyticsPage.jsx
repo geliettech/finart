@@ -131,7 +131,7 @@ const AnalyticsPage = () => {
                   {categoriesBreakdown.map(({ name, amount }) => {
                     const total = categoriesBreakdown.reduce((sum, item) => sum + item.amount, 0);
                     const percent = total > 0 ? amount / total * 100 : 0;
-                    return <div key={name}><div className="mb-1 flex justify-between gap-3 text-sm"><span className="font-medium">{name}</span><span className="text-muted-foreground">{formatMoney(amount, currency)}</span></div><div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-label={`${name} share of selected expenses`} aria-valuenow={Math.round(percent)} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-[#5d8550]" style={{ width: `${percent}%` }} /></div></div>;
+ return <div key={name}><div className="mb-1 flex justify-between gap-3 text-sm"><span className="font-medium">{name}</span><span className="text-muted-foreground">{formatMoney(amount, currency)}</span></div><div className="h-2 overflow-hidden rounded-full bg-muted" role="progressbar" aria-label={`${name} share of selected expenses`} aria-valuenow={Math.round(percent)} aria-valuemin={0} aria-valuemax={100}><div className="h-full rounded-full bg-muted" style={{ width: `${percent}%` }} /></div></div>;
                   })}
                   <p className="sr-only">Top spending categories: {categoriesBreakdown.map(({ name, amount }) => `${name}: ${formatMoney(amount, currency)}`).join("; ")}</p>
                 </div>
@@ -143,8 +143,8 @@ const AnalyticsPage = () => {
                 <div>
                   <div className="flex h-48 items-end gap-2 border-b border-border pb-2 sm:gap-4">
                     {monthly.map((item) => <div key={item.month} className="flex h-full flex-1 items-end justify-center gap-1">
-                      <span title={`${item.label} income: ${formatMoney(item.income, currency)}`} className="w-full max-w-8 rounded-t bg-[#174b38] dark:bg-[#d0e7ad]" style={{ height: `${Math.max(item.income ? 4 : 0, item.income / maxMonthly * 100)}%` }} />
-                      <span title={`${item.label} expenses: ${formatMoney(item.expenses, currency)}`} className="w-full max-w-8 rounded-t bg-[#bdd0ad]" style={{ height: `${Math.max(item.expenses ? 4 : 0, item.expenses / maxMonthly * 100)}%` }} />
+ <span title={`${item.label} income: ${formatMoney(item.income, currency)}`} className="w-full max-w-8 rounded-t bg-brand " style={{ height: `${Math.max(item.income ? 4 : 0, item.income / maxMonthly * 100)}%` }} />
+ <span title={`${item.label} expenses: ${formatMoney(item.expenses, currency)}`} className="w-full max-w-8 rounded-t bg-accent" style={{ height: `${Math.max(item.expenses ? 4 : 0, item.expenses / maxMonthly * 100)}%` }} />
                     </div>)}
                   </div>
                   <div className="mt-2 flex justify-between text-xs text-muted-foreground">{monthly.map((item) => <span key={item.month}>{item.label}</span>)}</div>
@@ -160,7 +160,7 @@ const AnalyticsPage = () => {
                 <ul className="space-y-4">{relevantBudgets.map((budget) => {
                   const spent = getBudgetSpent(budget, transactions);
                   const state = getBudgetState(budget, spent);
-                  return <li key={budget.id}><div className="flex justify-between gap-3 text-sm"><span className="font-medium">{budget.category}</span><span className={state.exceeded ? "text-destructive" : "text-muted-foreground"}>{formatMoney(spent, currency)} / {formatMoney(budget.amount, currency)}</span></div><div className="mt-2 h-2 rounded-full bg-muted"><div className={`h-2 rounded-full ${state.exceeded ? "bg-destructive" : state.approaching ? "bg-amber-500" : "bg-[#5d8550]"}`} style={{ width: `${state.percentage}%` }} /></div></li>;
+ return <li key={budget.id}><div className="flex justify-between gap-3 text-sm"><span className="font-medium">{budget.category}</span><span className={state.exceeded ? "text-destructive" : "text-muted-foreground"}>{formatMoney(spent, currency)} / {formatMoney(budget.amount, currency)}</span></div><div className="mt-2 h-2 rounded-full bg-muted"><div className={`h-2 rounded-full ${state.exceeded ? "bg-destructive" : state.approaching ? "bg-status-warning-surface" : "bg-muted"}`} style={{ width: `${state.percentage}%` }} /></div></li>;
                 })}</ul>
               )}
             </Panel>
@@ -172,7 +172,7 @@ const AnalyticsPage = () => {
                     : "No category is at least twice its average in the three immediately preceding date ranges of equal length. The comparison uses recorded expense data only."}
                 </p>
               ) : (
-                <ul className="space-y-3">{unusualSpending.map(({ name, amount }) => <li key={name} className="rounded-xl bg-amber-50 p-3 text-sm dark:bg-amber-950/30"><p className="font-medium">{name} spending is notably higher</p><p className="mt-1 text-muted-foreground">Current selected-range total: {formatMoney(amount, currency)}. It is at least twice the average in each of the three preceding calendar months.</p></li>)}</ul>
+ <ul className="space-y-3">{unusualSpending.map(({ name, amount }) => <li key={name} className="rounded-xl bg-status-warning-surface p-3 text-sm "><p className="font-medium">{name} spending is notably higher</p><p className="mt-1 text-muted-foreground">Current selected-range total: {formatMoney(amount, currency)}. It is at least twice the average in each of the three preceding calendar months.</p></li>)}</ul>
               )}
               <p className="mt-4 text-xs leading-5 text-muted-foreground">These comparisons are descriptive and are not financial advice or a prediction.</p>
             </Panel>

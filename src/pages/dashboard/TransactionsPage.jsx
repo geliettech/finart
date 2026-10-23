@@ -197,7 +197,7 @@ const TransactionsPage = () => {
                         <td className="px-4 py-3 text-muted-foreground">{item.category || "Uncategorized"}</td>
                         <td className="whitespace-nowrap px-4 py-3 text-muted-foreground">{formatDate(getTransactionDate(item))}</td>
                         <td className="px-4 py-3 capitalize">{item.transactionType || "Unknown"}</td>
-                        <td className={`whitespace-nowrap px-4 py-3 text-right font-semibold ${positive ? "text-emerald-700 dark:text-emerald-300" : ""}`}>
+ <td className={`whitespace-nowrap px-4 py-3 text-right font-semibold ${positive ? "text-status-success " : ""}`}>
                           <span className="inline-flex items-center justify-end gap-1">
                             {positive ? <ArrowDown aria-hidden="true" size={14} /> : <ArrowUp aria-hidden="true" size={14} />}
                             {formatMoney(getAmount(item), getCurrency(item))}
@@ -205,7 +205,7 @@ const TransactionsPage = () => {
                         </td>
                         <td className="px-4 py-3">
                           <div className="flex justify-end gap-1">
-                            <button type="button" onClick={() => openEdit(item)} aria-label={`Edit ${item.description}`} className="flex size-9 items-center justify-center rounded-lg hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42]"><Pencil aria-hidden="true" size={16} /></button>
+ <button type="button" onClick={() => openEdit(item)} aria-label={`Edit ${item.description}`} className="flex size-9 items-center justify-center rounded-lg hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"><Pencil aria-hidden="true" size={16} /></button>
                             <button type="button" onClick={() => handleDelete(item)} aria-label={`Delete ${item.description}`} className="flex size-9 items-center justify-center rounded-lg text-destructive hover:bg-destructive/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-destructive"><Trash2 aria-hidden="true" size={16} /></button>
                           </div>
                         </td>
@@ -227,7 +227,7 @@ const TransactionsPage = () => {
       </Panel>
 
       {formOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-black/45 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) setFormOpen(false); }}>
+ <div className="fixed inset-0 z-50 flex items-center justify-center overflow-y-auto bg-overlay/45 p-4" onMouseDown={(event) => { if (event.target === event.currentTarget) setFormOpen(false); }}>
           <section role="dialog" aria-modal="true" aria-labelledby="transaction-dialog-title" className="my-auto w-full max-w-xl rounded-2xl border border-border bg-card p-5 shadow-2xl sm:p-7">
             <div className="mb-5 flex items-start justify-between gap-4">
               <div>

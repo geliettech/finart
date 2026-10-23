@@ -20,8 +20,8 @@ const StaffOverviewPage = () => (
       <StaffPanel title="Operational data readiness" description="No customer or payment data is displayed without an authorized backend source.">
         <div className="mt-5 space-y-3">
           {readiness.map(({ title, description, endpoint, icon: Icon, to }) => (
-            <Link key={title} to={to} className="flex items-start gap-3 rounded-xl border border-border p-4 transition hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42]">
-              <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-[#edf3e9] text-[#315b3c] dark:bg-[#2a3e30] dark:text-[#cde4ad]"><Icon aria-hidden="true" size={18} /></span>
+ <Link key={title} to={to} className="flex items-start gap-3 rounded-xl border border-border p-4 transition hover:bg-muted/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring">
+ <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-surface-subtle text-primary "><Icon aria-hidden="true" size={18} /></span>
               <span className="min-w-0 flex-1"><span className="block font-medium">{title}</span><span className="mt-1 block text-sm text-muted-foreground">{description}</span><span className="mt-2 block break-words font-mono text-xs text-muted-foreground">Required: {endpoint}</span></span>
               <ArrowRight aria-hidden="true" size={17} className="mt-1 shrink-0 text-muted-foreground" />
             </Link>

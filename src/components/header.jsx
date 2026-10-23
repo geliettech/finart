@@ -34,15 +34,15 @@ const Header = () => {
   const closeMenu = () => setIsOpen(false);
 
   return (
-    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-[#e7ece5]/80 bg-[#f7f8f4]/95 backdrop-blur-md dark:border-white/10 dark:bg-[#111a16]/95">
+ <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-border/80 bg-background/95 backdrop-blur-md ">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
         <Link
           to="/"
           onClick={closeMenu}
-          className="flex items-center gap-2 rounded-md text-lg font-bold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4d7c42]"
+ className="flex items-center gap-2 rounded-md text-lg font-bold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           aria-label="FINART home"
         >
-          <span className="flex size-9 items-center justify-center rounded-xl bg-[#174b38] text-[#d0e7ad]">
+ <span className="flex size-9 items-center justify-center rounded-xl bg-brand text-primary">
             <WalletCards aria-hidden="true" size={21} />
           </span>
           <span>FINART</span>
@@ -53,7 +53,7 @@ const Header = () => {
             <a
               key={href}
               href={href}
-              className="rounded-sm text-sm font-medium text-[#58685d] transition hover:text-[#174b38] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4d7c42] dark:text-[#c2cec4] dark:hover:text-white"
+ className="rounded-sm text-sm font-medium text-muted-foreground transition hover:text-primary focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring "
             >
               {label}
             </a>
@@ -63,13 +63,13 @@ const Header = () => {
         <div className="hidden items-center gap-3 lg:flex">
           <Link
             to="/sign-in"
-            className="rounded-full px-4 py-2.5 text-sm font-semibold transition hover:bg-[#e9eee7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:hover:bg-white/10"
+ className="rounded-full px-4 py-2.5 text-sm font-semibold transition hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring "
           >
             Log in
           </Link>
           <Link
             to="/sign-up"
-            className="rounded-full bg-[#174b38] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#103b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42]"
+ className="rounded-full bg-brand px-5 py-2.5 text-sm font-semibold text-brand-foreground transition hover:bg-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring"
           >
             Get started free
           </Link>
@@ -77,7 +77,7 @@ const Header = () => {
 
         <button
           type="button"
-          className="flex size-11 items-center justify-center rounded-xl border border-[#dfe7dc] text-[#18352a] transition hover:bg-[#e9eee7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:border-white/15 dark:text-white dark:hover:bg-white/10 lg:hidden"
+ className="flex size-11 items-center justify-center rounded-xl border border-border text-foreground transition hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring lg:hidden"
           onClick={() => setIsOpen((open) => !open)}
           aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
           aria-expanded={isOpen}
@@ -90,7 +90,7 @@ const Header = () => {
       <div
         id="mobile-navigation"
         hidden={!isOpen}
-        className="border-t border-[#e7ece5] bg-[#f7f8f4] px-5 pb-6 pt-3 dark:border-white/10 dark:bg-[#111a16] lg:hidden"
+ className="border-t border-border bg-background px-5 pb-6 pt-3 lg:hidden"
       >
         <nav aria-label="Mobile navigation" className="mx-auto flex max-w-7xl flex-col">
           {navigation.map(({ label, href }) => (
@@ -98,23 +98,23 @@ const Header = () => {
               key={href}
               href={href}
               onClick={closeMenu}
-              className="rounded-lg px-3 py-3 text-base font-medium transition hover:bg-[#e9eee7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42] dark:hover:bg-white/10"
+ className="rounded-lg px-3 py-3 text-base font-medium transition hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring "
             >
               {label}
             </a>
           ))}
-          <div className="mt-3 flex gap-3 border-t border-[#e1e8df] pt-4 dark:border-white/10">
+ <div className="mt-3 flex gap-3 border-t border-border pt-4 ">
             <Link
               to="/sign-in"
               onClick={closeMenu}
-              className="flex min-h-11 flex-1 items-center justify-center rounded-full border border-[#dfe7dc] px-4 text-sm font-semibold dark:border-white/15"
+ className="flex min-h-11 flex-1 items-center justify-center rounded-full border border-border px-4 text-sm font-semibold "
             >
               Log in
             </Link>
             <Link
               to="/sign-up"
               onClick={closeMenu}
-              className="flex min-h-11 flex-1 items-center justify-center rounded-full bg-[#174b38] px-4 text-sm font-semibold text-white"
+ className="flex min-h-11 flex-1 items-center justify-center rounded-full bg-brand px-4 text-sm font-semibold text-brand-foreground"
             >
               Get started free
             </Link>

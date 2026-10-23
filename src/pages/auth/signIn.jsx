@@ -112,7 +112,7 @@ const SignInPage = () => {
                 <Link
                   to="/forgot-password"
                   state={{ email: form.getValues("email") }}
-                  className="rounded-sm text-sm font-semibold text-[#174b38] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:text-[#d0e7ad]"
+ className="rounded-sm text-sm font-semibold text-primary hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring "
                 >
                   Forgot password?
                 </Link>
@@ -133,35 +133,35 @@ const SignInPage = () => {
         <button
           type="submit"
           disabled={isBusy}
-          className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#174b38] px-5 py-3 font-semibold text-white transition hover:bg-[#103b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60"
+ className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-brand px-5 py-3 font-semibold text-brand-foreground transition hover:bg-brand focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60"
         >
           {form.formState.isSubmitting ? "Signing in…" : "Log in"}
           {!isBusy && <ArrowRight aria-hidden="true" size={18} />}
         </button>
       </form>
 
-      <div className="my-5 flex items-center gap-3 text-xs text-[#879188]" aria-hidden="true">
-        <span className="h-px flex-1 bg-[#e5ebe3] dark:bg-white/10" />
+ <div className="my-5 flex items-center gap-3 text-xs text-muted-foreground" aria-hidden="true">
+ <span className="h-px flex-1 bg-muted " />
         or
-        <span className="h-px flex-1 bg-[#e5ebe3] dark:bg-white/10" />
+ <span className="h-px flex-1 bg-muted " />
       </div>
 
       <button
         type="button"
         onClick={handleGoogleSignIn}
         disabled={isBusy}
-        className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-[#d8e2d5] px-5 py-3 font-semibold transition hover:bg-[#f3f6f1] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/15 dark:hover:bg-white/10"
+ className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border border-border px-5 py-3 font-semibold transition hover:bg-surface-subtle focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-ring disabled:cursor-not-allowed disabled:opacity-60 "
       >
-        <span aria-hidden="true" className="font-bold text-[#4285f4]">G</span>
+ <span aria-hidden="true" className="font-bold text-muted-foreground">G</span>
         {googleLoading ? "Connecting to Google…" : "Continue with Google"}
       </button>
 
-      <p className="mt-6 text-center text-sm text-[#68766b] dark:text-[#bdc9bf]">
+ <p className="mt-6 text-center text-sm text-muted-foreground ">
         New to FINART?{" "}
         <Link
           to="/sign-up"
           state={{ from: location.state?.from }}
-          className="font-semibold text-[#174b38] underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:text-[#d0e7ad]"
+ className="font-semibold text-primary underline-offset-4 hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring "
         >
           Create an account
         </Link>

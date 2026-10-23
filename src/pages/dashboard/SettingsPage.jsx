@@ -54,8 +54,8 @@ const SettingsPage = () => {
       <div className="grid gap-5 xl:grid-cols-2">
         <Panel title="Profile" description="Update your Firebase Authentication display name.">
           <div className="mb-5 flex items-center gap-3 rounded-xl bg-muted/50 p-4">
-            <span className="flex size-11 items-center justify-center rounded-full bg-[#e9f1e4] text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]"><UserRound aria-hidden="true" size={20} /></span>
-            <div className="min-w-0"><p className="truncate font-medium">{user?.email}</p><p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Check aria-hidden="true" size={13} className="text-emerald-600" /> Verified account</p></div>
+ <span className="flex size-11 items-center justify-center rounded-full bg-secondary text-primary "><UserRound aria-hidden="true" size={20} /></span>
+ <div className="min-w-0"><p className="truncate font-medium">{user?.email}</p><p className="mt-1 flex items-center gap-1 text-xs text-muted-foreground"><Check aria-hidden="true" size={13} className="text-status-success" /> Verified account</p></div>
           </div>
           <form onSubmit={saveProfile} className="space-y-4">
             <FormField label="Display name" id="profile-name">
@@ -79,14 +79,14 @@ const SettingsPage = () => {
             </FormField>
             <fieldset className="space-y-3">
               <legend className="text-sm font-medium">Dashboard alerts</legend>
-              <label className="flex items-start gap-3 text-sm"><input type="checkbox" checked={budgetNotifications} onChange={(event) => setBudgetNotifications(event.target.checked)} className="mt-0.5 size-4 accent-[#174b38]" /><span><span className="font-medium">Budget warnings</span><span className="mt-0.5 block text-xs text-muted-foreground">Derived from actual budget and expense data.</span></span></label>
-              <label className="flex items-start gap-3 text-sm"><input type="checkbox" checked={recurringNotifications} onChange={(event) => setRecurringNotifications(event.target.checked)} className="mt-0.5 size-4 accent-[#174b38]" /><span><span className="font-medium">Upcoming recurring schedules</span><span className="mt-0.5 block text-xs text-muted-foreground">Schedule previews only; no transaction is automatically created.</span></span></label>
+ <label className="flex items-start gap-3 text-sm"><input type="checkbox" checked={budgetNotifications} onChange={(event) => setBudgetNotifications(event.target.checked)} className="mt-0.5 size-4 accent-primary" /><span><span className="font-medium">Budget warnings</span><span className="mt-0.5 block text-xs text-muted-foreground">Derived from actual budget and expense data.</span></span></label>
+ <label className="flex items-start gap-3 text-sm"><input type="checkbox" checked={recurringNotifications} onChange={(event) => setRecurringNotifications(event.target.checked)} className="mt-0.5 size-4 accent-primary" /><span><span className="font-medium">Upcoming recurring schedules</span><span className="mt-0.5 block text-xs text-muted-foreground">Schedule previews only; no transaction is automatically created.</span></span></label>
             </fieldset>
             <div className="rounded-xl border border-border p-4">
               <p className="text-sm font-medium">Appearance</p>
               <div className="mt-3 flex gap-2">
-                <button type="button" onClick={setLight} aria-pressed={theme === "light"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "light" ? "border-[#174b38] bg-[#e9f1e4] text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]" : "border-border"}`}><Sun aria-hidden="true" size={16} /> Light</button>
-                <button type="button" onClick={setDark} aria-pressed={theme === "dark"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "dark" ? "border-[#174b38] bg-[#e9f1e4] text-[#174b38] dark:bg-[#2a4032] dark:text-[#d0e7ad]" : "border-border"}`}><Moon aria-hidden="true" size={16} /> Dark</button>
+ <button type="button" onClick={setLight} aria-pressed={theme === "light"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "light" ? "border-primary bg-secondary text-primary " : "border-border"}`}><Sun aria-hidden="true" size={16} /> Light</button>
+ <button type="button" onClick={setDark} aria-pressed={theme === "dark"} className={`inline-flex min-h-10 items-center gap-2 rounded-lg border px-3 text-sm ${theme === "dark" ? "border-primary bg-secondary text-primary " : "border-border"}`}><Moon aria-hidden="true" size={16} /> Dark</button>
               </div>
             </div>
             <button type="submit" className={primaryButtonClass}>Save preferences</button>
@@ -95,7 +95,7 @@ const SettingsPage = () => {
 
         <Panel title="Security" description="Password changes use Firebase's password-reset flow.">
           <p className="text-sm leading-6 text-muted-foreground">For account recovery, request a reset email sent to your verified address. Firebase handles the reset link.</p>
-          <Link to="/forgot-password" state={{ email: user?.email }} className="mt-4 inline-flex min-h-10 items-center rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42]">Request password reset</Link>
+ <Link to="/forgot-password" state={{ email: user?.email }} className="mt-4 inline-flex min-h-10 items-center rounded-xl border border-border px-4 text-sm font-medium hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring">Request password reset</Link>
           <div className="mt-5 border-t border-border pt-4">
             <p className="text-sm font-medium">Sessions and account deletion</p>
             <p className="mt-1 text-xs leading-5 text-muted-foreground">Server-side session revocation and complete account/data deletion are not configured. No controls are shown that would imply those actions were completed.</p>
