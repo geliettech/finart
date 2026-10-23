@@ -1,142 +1,103 @@
-import { Element } from "react-scroll";
 import { useState } from "react";
-import clsx from "clsx";
+import { Check } from "lucide-react";
+import { Link } from "react-router";
 import { plans } from "../constants/index.jsx";
-import { Button } from "@/components/ui/button";
-import { Marker } from "./Marker.jsx";
 
 const Pricing = () => {
-    const [monthly, setMonthly] = useState(false);
+  const [billingPeriod, setBillingPeriod] = useState("monthly");
 
-    return (
-        <section className="py-24 sm:py-28 lg:py-32">
-            <Element name="pricing">
-                <div className="container">
-                    <div className="mx-auto w-full max-w-5xl rounded-[2rem] border border-border bg-primary/5 p-6 sm:p-8 lg:p-12">
-                        <div className="space-y-10">
-                            <div className="space-y-4 text-center">
-                                <p className="text-sm uppercase tracking-[0.35em] text-secondary">
-                                    pricing
-                                </p>
-                                <h3 className="h3 text-primary max-w-4xl mx-auto">
-                                    Flexible pricing for Different Users
-                                </h3>
-                                <p className="mx-auto max-w-2xl body-one text-secondary">
-                                    Pick the plan that fits your goals and scale easily to improve your financial health.
-                                </p>
-                            </div>
+  return (
+    <section id="pricing" className="scroll-mt-24 px-5 py-16 sm:px-8 sm:py-24" aria-labelledby="pricing-title">
+      <div className="mx-auto max-w-7xl">
+        <div className="mx-auto max-w-2xl text-center">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#61824d] dark:text-[#c4dd9e]">Plans</p>
+          <h2 id="pricing-title" className="text-3xl font-semibold tracking-tight sm:text-5xl">Choose a plan for your next step.</h2>
+          <p className="mt-4 text-base leading-7 text-[#657369] dark:text-[#bdc9bf]">
+            Start with the free plan. Paid plan prices below use the amounts already configured for FINART.
+          </p>
+          <div className="mt-7 inline-flex rounded-full border border-[#dfe7dc] bg-white p-1 dark:border-white/10 dark:bg-[#1b2821]" role="group" aria-label="Billing period">
+            {["monthly", "yearly"].map((period) => (
+              <button
+                key={period}
+                type="button"
+                onClick={() => setBillingPeriod(period)}
+                aria-pressed={billingPeriod === period}
+                className={`min-h-10 min-w-28 rounded-full px-4 text-sm font-semibold capitalize transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] ${
+                  billingPeriod === period
+                    ? "bg-[#174b38] text-white"
+                    : "text-[#657369] hover:text-[#18352a] dark:text-[#bdc9bf] dark:hover:text-white"
+                }`}
+              >
+                {period}
+              </button>
+            ))}
+          </div>
+        </div>
 
-                            <div className="mx-auto max-w-md rounded-3xl border border-border/25 bg-secondary/50 p-2 shadow-sm">
-                                <div className="relative flex items-center rounded-3xl bg-background p-1">
-                                    <button
-                                        className={clsx(
-                                            "flex-1 rounded-2xl py-3 text-sm font-semibold transition-colors duration-300",
-                                            monthly ? "text-foreground" : "text-secondary"
-                                        )}
-                                        onClick={() => setMonthly(true)}
-                                    >
-                                        Monthly
-                                    </button>
-                                    <button
-                                        className={clsx(
-                                            "flex-1 rounded-2xl py-3 text-sm font-semibold transition-colors duration-300",
-                                            !monthly ? "text-foreground" : "text-secondary"
-                                        )}
-                                        onClick={() => setMonthly(false)}
-                                    >
-                                        Annual
-                                    </button>
-                                    <div
-                                        className={clsx(
-                                            "pointer-events-none absolute left-1 top-1 h-[calc(100%-8px)] w-[calc(50%-8px)] rounded-2xl bg-primary/20 transition-transform duration-300",
-                                            !monthly && "translate-x-full"
-                                        )}
-                                    />
-                                </div>
-                            </div>
+        <div className="mt-10 grid items-stretch gap-5 md:grid-cols-3">
+          {plans.map((plan) => {
+            const price = billingPeriod === "monthly" ? plan.priceMonthly : plan.priceYearly;
+            const popular = plan.id === "pro";
 
-                            <div className="grid gap-6 grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
-                                {plans.map((plan, index) => (
-                                    <div
-                                        key={plan.id}
-                                        className="group relative overflow-hidden rounded-[2rem] border border-border bg-card p-8 shadow-sm transition-shadow duration-300 hover:shadow-lg"
-                                    >
-                                        {index === 1 && (
-                                            <div className="absolute inset-x-0 top-0 h-10 bg-secondary/10" />
-                                        )}
-
-                                        <div className="relative z-10 flex flex-col items-center gap-6 pt-6">
-                                            <div className="flex h-20 w-20 items-center justify-center rounded-full border border-border bg-background p-4 shadow-sm">
-                                                <img
-                                                    src={plan.logo}
-                                                    alt={plan.title}
-                                                    className="h-full w-full object-contain"
-                                                />
-                                            </div>
-
-                                            <div className="rounded-[1.25rem] border border-border px-4 py-2 uppercase text-sm tracking-[0.18em] text-center">
-                                                {plan.title}
-                                            </div>
-
-                                            <div className="flex items-end gap-2 text-center">
-                                                <span className="text-5xl font-bold leading-none">
-                                                    &#8358;{monthly ? plan.priceMonthly : plan.priceYearly}
-                                                </span>
-                                                <span className="small-one uppercase relative top-2">
-                                                    / {monthly ? "mo" : "yr"}
-                                                </span>
-                                            </div>
-                                        </div>
-
-                                        <p className="body-1 relative z-10 mb-8 mt-4 border-b border-border pb-9 text-center text-foreground">
-                                            {plan.caption}
-                                        </p>
-
-                                        <ul className="space-y-4 text-foreground">
-                                            {plan.features.map((feature) => (
-                                                <li key={feature} className="flex items-center gap-1">
-                                                    <img
-                                                        src="/images/check.png"
-                                                        alt="check"
-                                                        className="size-10 object-contain"
-                                                    />
-                                                    <span>{feature}</span>
-                                                </li>
-                                            ))}
-                                        </ul>
-
-                                        <div className="mt-10 flex justify-center">
-                                            <Button
-                                                size="lg"
-                                                className="rounded-full btn base p-4 flex items-center gap-2 relative"
-                                                aria-label={`Get started with ${plan.title}`}
-                                            >
-                                                <span className="absolute -left-px">
-                                                    <Marker fill="currentColor" className="text-secondary size-5 z-10" />
-                                                </span>
-                                                <img
-                                                    src={plan.icon}
-                                                    alt={plan.title}
-                                                    className="text-secondary size-6 z-10"
-                                                />
-                                                Get Started
-                                            </Button>
-                                        </div>
-
-                                        {index === 1 && (
-                                            <p className="small-compact mt-9 text-center text-foreground uppercase tracking-[0.25em]">
-                                                Limited time offer
-                                            </p>
-                                        )}
-                                    </div>
-                                ))}
-                            </div>
-                        </div>
-                    </div>
+            return (
+              <article
+                key={plan.id}
+                className={`relative flex flex-col rounded-3xl border p-6 sm:p-8 ${
+                  popular
+                    ? "border-[#174b38] bg-[#174b38] text-white shadow-[0_24px_70px_-40px_rgba(23,75,56,0.75)]"
+                    : "border-[#e1e8df] bg-white dark:border-white/10 dark:bg-[#1b2821]"
+                }`}
+              >
+                {popular && (
+                  <span className="absolute right-5 top-5 rounded-full bg-[#d0e7ad] px-3 py-1.5 text-xs font-semibold text-[#18352a]">
+                    Most popular
+                  </span>
+                )}
+                <div className="pr-24">
+                  <h3 className="text-xl font-semibold">{plan.title}</h3>
+                  <p className={`mt-2 min-h-10 text-sm leading-5 ${popular ? "text-white/75" : "text-[#718076] dark:text-[#bdc9bf]"}`}>
+                    {plan.caption}
+                  </p>
                 </div>
-            </Element>
-        </section>
-    );
+                <p className="mt-7 flex min-h-12 items-baseline gap-2">
+                  <span className="text-4xl font-semibold tracking-tight">
+                    {price === 0 ? "Free" : `₦${price.toLocaleString("en-NG")}`}
+                  </span>
+                  {price > 0 && (
+                    <span className={`text-sm ${popular ? "text-white/70" : "text-[#718076] dark:text-[#bdc9bf]"}`}>
+                      / {billingPeriod === "monthly" ? "month" : "year"}
+                    </span>
+                  )}
+                </p>
+                <Link
+                  to="/sign-up"
+                  className={`mt-6 inline-flex min-h-12 items-center justify-center rounded-full px-5 py-3 text-sm font-semibold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 ${
+                    popular
+                      ? "bg-[#d0e7ad] text-[#18352a] hover:bg-white focus-visible:outline-white"
+                      : "border border-[#d8e2d5] hover:bg-[#f3f6f1] focus-visible:outline-[#4d7c42] dark:border-white/15 dark:hover:bg-white/10"
+                  }`}
+                >
+                  {plan.id === "basic" ? "Start with Basic" : "Create an account"}
+                </Link>
+                <div className={`my-7 border-t ${popular ? "border-white/20" : "border-[#e8ede6] dark:border-white/10"}`} />
+                <ul className="space-y-4">
+                  {plan.features.map((feature) => (
+                    <li key={feature} className="flex items-start gap-3 text-sm leading-6">
+                      <Check aria-hidden="true" size={18} className={`mt-0.5 shrink-0 ${popular ? "text-[#d0e7ad]" : "text-[#54783e]"}`} />
+                      <span>{feature}</span>
+                    </li>
+                  ))}
+                </ul>
+              </article>
+            );
+          })}
+        </div>
+        <p className="mx-auto mt-6 max-w-3xl text-center text-xs leading-5 text-[#718076] dark:text-[#aebcb1]">
+          Paid plan checkout is not available from this page. Creating an account does not start a subscription or payment.
+        </p>
+      </div>
+    </section>
+  );
 };
 
 export default Pricing;

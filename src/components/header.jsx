@@ -1,107 +1,125 @@
-import { Link as LinkScroll } from "react-scroll";
-import { useEffect, useState } from "react";
-import clsx from "clsx";
-import { Link, useNavigate } from "react-router";
-import { useTheme } from "../layout/context/themeProvider";
-import { Button } from "@/components/ui/button";
+import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
+import { Menu, WalletCards, X } from "lucide-react";
 
+const navigation = [
+  { label: "Features", href: "#features" },
+  { label: "How it works", href: "#how-it-works" },
+  { label: "Pricing", href: "#pricing" },
+  { label: "FAQ", href: "#faq" },
+];
 
 const Header = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [hasScrolled, setHasScrolled] = useState(false);
-
-  const { theme } = useTheme();
-  const navigate = useNavigate();
-
-  const NAV_ITEMS = [
-    { label: "Features", target: "features" },
-    { label: "Pricing", target: "pricing" },
-    { label: "FAQ", target: "faq" },
-  ];
+  const headerRef = useRef(null);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setHasScrolled(window.scrollY > 32);
+    if (!isOpen) return undefined;
+
+    const closeOnEscape = (event) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+    const closeOnOutsideClick = (event) => {
+      if (!headerRef.current?.contains(event.target)) setIsOpen(false);
     };
 
-    window.addEventListener("scroll", handleScroll);
-
+    window.addEventListener("keydown", closeOnEscape);
+    document.addEventListener("pointerdown", closeOnOutsideClick);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("keydown", closeOnEscape);
+      document.removeEventListener("pointerdown", closeOnOutsideClick);
     };
-  }, []);
+  }, [isOpen]);
 
+  const closeMenu = () => setIsOpen(false);
 
   return (
-    <header className={clsx("fixed top-0 left-0 z-50 w-full text-foreground transition-all duration-500", hasScrolled
-      ? "py-1 bg-background/70 backdrop-blur-md shadow-sm"
-      : "py-4 bg-transparent")}>
-      <div className="container flex items-center justify-between h-16">
-        {/* logo */}
-        <Link to="/" className="relative z-20 cursor-pointer">
-          <img src={
-            theme === "light"
-              ? "/images/fina-light.png"
-              : "/images/fina-dark.png"
-          } width={160} height={55} alt="logo" />
-        </Link>
-        <div className={clsx("lg:flex lg:flex-1 lg:items-center lg:justify-between lg:ml-2", "max-lg:absolute max-lg:top-full max-lg:left-6 max-lg:right-6 max-lg:bg-card max-lg:rounded-xl max-lg:shadow-200", "transition-all duration-300 ",
-          isOpen ? "max-lg:opacity-100 max-lg:translate-y-0" : "max-lg:opacity-0 max-lg:-translate-y-5")}>
-          {/* navigation & authenication */}
-          <div className="relative z-10 flex lg:flex-row flex-col lg:items-center lg:justify-between w-full max-lg:p-10 max-lg:gap-8">
-            {/* navigation */}
-            <nav className="w-full lg:w-auto">
-              <ul className="flex max-lg:flex-col gap-12">
-                {NAV_ITEMS.map(({ label, target }) => (
-                  <li key={target} className="nav-li">
-                    <LinkScroll
-                      onClick={() => setIsOpen(false)}
-                      to={target}
-                      offset={-100}
-                      spy
-                      smooth
-                      activeClass="nav-active"
-                      className="base text-foreground capitalize cursor-pointer transition-all duration-500 hover:scale-105 hover:text-secondary"
-                    >
-                      {label}
-                    </LinkScroll>
-                  </li>
-                ))}
-              </ul>
-            </nav>
-            <hr className="lg:hidden border border-border/60 size-full rounded-full" />
-            {/* authenication */}
-            <div className="flex flex-col lg:flex-row gap-8">
-              <Button variant="ghost" size="lg" className="rounded-full btn base" aria-label="sign-in" onClick={() => navigate("/sign-in")}>Sign In</Button>
-              <Button size="lg" className="rounded-full btn base" aria-label="sign-up" onClick={() => navigate("/sign-up")}>Start for Free</Button>
-            </div>
-          </div>
-          {/* Background */}
-          <div className="lg:hidden absolute inset-0 pointer-events-none">
-            <img
-              src="/images/bg-outlines.svg"
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover"
-            />
-
-            <img
-              src="/images/bg-outlines-fill.png"
-              alt=""
-              className="absolute inset-0 w-full h-full object-cover mix-blend-soft-light opacity-5"
-            />
-          </div>
-        </div>
-        {/* Hamburger */}
-        <button
-          className="lg:hidden z-2 size-10 border-2 border-border/60 rounded-full flex justify-center items-center"
-          onClick={() => setIsOpen((prevState) => !prevState)} aria-label="Toggle menu"
+    <header ref={headerRef} className="fixed inset-x-0 top-0 z-50 border-b border-[#e7ece5]/80 bg-[#f7f8f4]/95 backdrop-blur-md dark:border-white/10 dark:bg-[#111a16]/95">
+      <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between px-5 sm:px-8">
+        <Link
+          to="/"
+          onClick={closeMenu}
+          className="flex items-center gap-2 rounded-md text-lg font-bold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4d7c42]"
+          aria-label="FINART home"
         >
-          <img
-            src={`/images/${isOpen ? "close" : "magic"}.svg`}
-            alt="magic"
-            className="size-1/2 object-contain"
-          />
+          <span className="flex size-9 items-center justify-center rounded-xl bg-[#174b38] text-[#d0e7ad]">
+            <WalletCards aria-hidden="true" size={21} />
+          </span>
+          <span>FINART</span>
+        </Link>
+
+        <nav aria-label="Main navigation" className="hidden items-center gap-8 lg:flex">
+          {navigation.map(({ label, href }) => (
+            <a
+              key={href}
+              href={href}
+              className="rounded-sm text-sm font-medium text-[#58685d] transition hover:text-[#174b38] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4d7c42] dark:text-[#c2cec4] dark:hover:text-white"
+            >
+              {label}
+            </a>
+          ))}
+        </nav>
+
+        <div className="hidden items-center gap-3 lg:flex">
+          <Link
+            to="/sign-in"
+            className="rounded-full px-4 py-2.5 text-sm font-semibold transition hover:bg-[#e9eee7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:hover:bg-white/10"
+          >
+            Log in
+          </Link>
+          <Link
+            to="/sign-up"
+            className="rounded-full bg-[#174b38] px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-[#103b2b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42]"
+          >
+            Get started free
+          </Link>
+        </div>
+
+        <button
+          type="button"
+          className="flex size-11 items-center justify-center rounded-xl border border-[#dfe7dc] text-[#18352a] transition hover:bg-[#e9eee7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#4d7c42] dark:border-white/15 dark:text-white dark:hover:bg-white/10 lg:hidden"
+          onClick={() => setIsOpen((open) => !open)}
+          aria-label={isOpen ? "Close navigation menu" : "Open navigation menu"}
+          aria-expanded={isOpen}
+          aria-controls="mobile-navigation"
+        >
+          {isOpen ? <X aria-hidden="true" size={21} /> : <Menu aria-hidden="true" size={21} />}
         </button>
+      </div>
+
+      <div
+        id="mobile-navigation"
+        hidden={!isOpen}
+        className="border-t border-[#e7ece5] bg-[#f7f8f4] px-5 pb-6 pt-3 dark:border-white/10 dark:bg-[#111a16] lg:hidden"
+      >
+        <nav aria-label="Mobile navigation" className="mx-auto flex max-w-7xl flex-col">
+          {navigation.map(({ label, href }) => (
+            <a
+              key={href}
+              href={href}
+              onClick={closeMenu}
+              className="rounded-lg px-3 py-3 text-base font-medium transition hover:bg-[#e9eee7] focus-visible:outline focus-visible:outline-2 focus-visible:outline-[#4d7c42] dark:hover:bg-white/10"
+            >
+              {label}
+            </a>
+          ))}
+          <div className="mt-3 flex gap-3 border-t border-[#e1e8df] pt-4 dark:border-white/10">
+            <Link
+              to="/sign-in"
+              onClick={closeMenu}
+              className="flex min-h-11 flex-1 items-center justify-center rounded-full border border-[#dfe7dc] px-4 text-sm font-semibold dark:border-white/15"
+            >
+              Log in
+            </Link>
+            <Link
+              to="/sign-up"
+              onClick={closeMenu}
+              className="flex min-h-11 flex-1 items-center justify-center rounded-full bg-[#174b38] px-4 text-sm font-semibold text-white"
+            >
+              Get started free
+            </Link>
+          </div>
+        </nav>
       </div>
     </header>
   );

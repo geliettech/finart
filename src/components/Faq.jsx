@@ -1,81 +1,60 @@
-import { Element } from "react-scroll";
-import { faqs } from "../constants/index.jsx";
 import { useState } from "react";
-import clsx from "clsx";
+import { ChevronDown } from "lucide-react";
+import { faqs } from "../constants/index.jsx";
 
 const Faq = () => {
-
   const [activeId, setActiveId] = useState(null);
 
-
   return (
-    <section className="bg-secondary py-16 sm:py-20">
-      <Element name="faq" className="relative">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="mb-4 text-sm font-semibold uppercase tracking-[0.3em] text-primary opacity-80">
-              Frequently asked questions
-            </p>
-            <h2 className="mb-4 text-3xl font-semibold leading-tight text-primary sm:text-4xl">
-              Curiosity didn't kill the cat, it gave it answers.
-            </h2>
-            <p className="mx-auto max-w-2xl text-base leading-8 text-primary sm:text-lg">
-              You've got questions, we've got answers. Explore our most common queries and get the clarity you need.
-            </p>
-          </div>
-
-
-
-          <div className="mt-14 grid gap-6 lg:grid-cols-2">
-            {faqs.map((faq) => {
-              const active = activeId === faq.id;
-              return (
-                <div key={faq.id} className="overflow-hidden rounded-[2rem] border border-border bg-surface shadow-sm transition-shadow duration-300 hover:shadow-lg">
-                  <button
-                    type="button"
-                    onClick={() => setActiveId(active ? null : faq.id)}
-                    className="flex w-full flex-col gap-4 px-6 py-6 text-left sm:px-8 sm:py-7"
-                    aria-expanded={active}
-                  >
-                    <div className="flex items-start justify-between gap-4">
-                      <div className="min-w-0 flex-1">
-                        <div className="mb-2 text-xs font-semibold uppercase tracking-[0.3em] text-primary opacity-80 sm:text-sm">
-                          {faq.id < 10 ? `0${faq.id}` : faq.id}
-                        </div>
-                        <h3 className={clsx("text-lg font-semibold leading-7 text-primary transition-colors duration-300 sm:text-xl", active && "text-sidebar-primary")}>
-                          {faq.question}
-                        </h3>
-                      </div>
-                      <div
-                        className={clsx(
-                          "relative flex h-12 w-12 items-center justify-center rounded-full border border-s2 transition duration-300",
-                          active ? "bg-sidebar-primary border-sidebar-primary text-primary-foreground" : "bg-background"
-                        )}
-                      >
-                        <span className={clsx("block h-5 w-5 rounded-full transition-transform duration-300", active ? "bg-background" : "bg-chart-4")} />
-                      </div>
-                    </div>
-                  </button>
-
-                  {active && (
-                    <div className="border-t border-border px-6 py-5 text-sm leading-7 text-foreground sm:px-8 sm:py-6">
-                      {faq.answer}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
-          </div>
+    <section id="faq" className="scroll-mt-24 px-5 py-16 sm:px-8 sm:py-24" aria-labelledby="faq-title">
+      <div className="mx-auto max-w-4xl">
+        <div className="mb-10 text-center">
+          <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-[#61824d] dark:text-[#c4dd9e]">FAQs</p>
+          <h2 id="faq-title" className="text-3xl font-semibold tracking-tight sm:text-5xl">A few helpful answers.</h2>
+          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#657369] dark:text-[#bdc9bf]">
+            What to know about FINART, its plans, and the information on this page.
+          </p>
         </div>
-      </Element>
+        <div className="divide-y divide-[#e5ebe3] overflow-hidden rounded-3xl border border-[#e1e8df] bg-white dark:divide-white/10 dark:border-white/10 dark:bg-[#1b2821]">
+          {faqs.map((faq) => {
+            const isOpen = activeId === faq.id;
+            const panelId = `faq-answer-${faq.id}`;
+
+            return (
+              <div key={faq.id} className="px-5 sm:px-7">
+                <h3>
+                  <button
+                    id={`faq-question-${faq.id}`}
+                    type="button"
+                    aria-expanded={isOpen}
+                    aria-controls={panelId}
+                    onClick={() => setActiveId(isOpen ? null : faq.id)}
+                    className="flex min-h-[68px] w-full items-center justify-between gap-5 py-5 text-left font-semibold transition hover:text-[#47704b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-[-2px] focus-visible:outline-[#4d7c42] dark:hover:text-[#d0e7ad]"
+                  >
+                    <span>{faq.question}</span>
+                    <ChevronDown
+                      aria-hidden="true"
+                      size={19}
+                      className={`shrink-0 transition-transform ${isOpen ? "rotate-180" : ""}`}
+                    />
+                  </button>
+                </h3>
+                <div
+                  id={panelId}
+                  role="region"
+                  aria-labelledby={`faq-question-${faq.id}`}
+                  hidden={!isOpen}
+                  className="pb-5 pr-8 text-sm leading-6 text-[#657369] dark:text-[#bdc9bf]"
+                >
+                  {faq.answer}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
     </section>
-
-
-
-
-
   );
 };
 
 export default Faq;
-

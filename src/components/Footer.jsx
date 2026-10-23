@@ -1,36 +1,32 @@
-import { socials } from "../constants/index.jsx";
+import { Link } from "react-router";
+import { WalletCards } from "lucide-react";
 
-const Footer = () => {
-  return (
-    <footer className="bg-surface py-10">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-center justify-between gap-6 md:flex-row md:items-center">
-          <div className="text-center md:text-left">
-            <p className="small-compact text-sm text-foreground opacity-70">Copyright, fina 2026. Powered by geliettech.</p>
-          </div>
-
-          <div className="flex flex-wrap items-center justify-center gap-4 text-center text-sm text-foreground md:justify-center">
-            <a href="#" className="transition-all duration-500 hover:text-secondary">
-              Privacy Policy
-            </a>
-            <span className="hidden md:inline-block">|</span>
-            <a href="#" className="transition-all duration-500 hover:text-secondary">
-              Terms of Use
-            </a>
-          </div>
-
-          <ul className="flex flex-wrap items-center justify-center gap-3">
-            {socials.map((social) => (
-              <li key={social.id}>
-                <a href={social.url} className="social-icon transition-colors duration-300 hover:text-secondary">
-                  <img src={social.icon} alt={social.title} className="h-8 w-8 object-contain" />
-                </a>
-              </li>
-            ))}
-          </ul>
-        </div>
+const Footer = () => (
+  <footer className="border-t border-[#e1e8df] px-5 py-10 dark:border-white/10 sm:px-8">
+    <div className="mx-auto flex max-w-7xl flex-col gap-8 sm:flex-row sm:items-center sm:justify-between">
+      <div className="max-w-sm">
+        <Link to="/" className="inline-flex items-center gap-2 rounded-md font-bold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-[#4d7c42]">
+          <span className="flex size-8 items-center justify-center rounded-lg bg-[#174b38] text-[#d0e7ad]">
+            <WalletCards aria-hidden="true" size={18} />
+          </span>
+          FINART
+        </Link>
+        <p className="mt-3 text-sm leading-6 text-[#718076] dark:text-[#aebcb1]">
+          A clearer view of your money, budgets, and financial goals.
+        </p>
       </div>
-    </footer>
-  );
-};
+
+      <nav aria-label="Footer navigation" className="flex flex-wrap gap-x-6 gap-y-3 text-sm font-medium text-[#526157] dark:text-[#c3cec5]">
+        <a href="#features" className="rounded-sm hover:text-[#174b38] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] dark:hover:text-white">Features</a>
+        <a href="#how-it-works" className="rounded-sm hover:text-[#174b38] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] dark:hover:text-white">How it works</a>
+        <a href="#pricing" className="rounded-sm hover:text-[#174b38] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] dark:hover:text-white">Pricing</a>
+        <Link to="/sign-in" className="rounded-sm hover:text-[#174b38] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-3 focus-visible:outline-[#4d7c42] dark:hover:text-white">Log in</Link>
+      </nav>
+    </div>
+    <div className="mx-auto mt-8 max-w-7xl border-t border-[#e8ede6] pt-5 text-xs text-[#718076] dark:border-white/10 dark:text-[#aebcb1]">
+      © {new Date().getFullYear()} FINART. All rights reserved.
+    </div>
+  </footer>
+);
+
 export default Footer;
