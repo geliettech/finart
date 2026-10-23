@@ -20,7 +20,10 @@ import {
 import { Link, NavLink, Outlet, useLocation } from "react-router";
 import { useAuth } from "@/layout/context/authProvider";
 import { useTheme } from "@/layout/context/themeProvider";
-import { DashboardDataProvider, useDashboardData } from "@/layout/dashboard/DashboardDataContext";
+import {
+  DashboardDataProvider,
+  useDashboardData,
+} from "@/layout/dashboard/DashboardDataContext";
 import {
   formatDate,
   formatMoney,
@@ -56,7 +59,8 @@ const routeTitle = {
 const DashboardShell = () => {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
-  const { transactions, budgets, recurring, searchTerm, setSearchTerm } = useDashboardData();
+  const { transactions, budgets, recurring, searchTerm, setSearchTerm } =
+    useDashboardData();
   const location = useLocation();
   const [mobileOpen, setMobileOpen] = useState(false);
   const [notificationsOpen, setNotificationsOpen] = useState(false);
@@ -64,25 +68,45 @@ const DashboardShell = () => {
   const [loggingOut, setLoggingOut] = useState(false);
   const title = routeTitle[location.pathname] || "Dashboard";
   const notifications = [
-    ...(localStorage.getItem("finart-budget-notifications") === "false" ? [] : budgets.flatMap((budget) => {
-      const spent = getBudgetSpent(budget, transactions);
-      const state = getBudgetState(budget, spent);
-      if (!state.approaching && !state.exceeded) return [];
-      return [{
-        id: `budget-${budget.id}`,
-        title: state.exceeded ? `${budget.category} budget exceeded` : `${budget.category} budget is nearly used`,
-        detail: `${formatMoney(spent, budget.currency)} spent of ${formatMoney(budget.amount, budget.currency)}.`,
-      }];
-    })),
-    ...(localStorage.getItem("finart-recurring-notifications") === "false" ? [] : recurring
-      .filter((item) => item.status === "active")
-      .map((item) => ({ ...item, occurrence: getNextOccurrence(item.nextDate, item.frequency, new Date(), item.endDate) }))
-      .filter((item) => item.occurrence && item.occurrence.getTime() - Date.now() <= 7 * 86400000)
-      .map((item) => ({
-        id: `recurring-${item.id}`,
-        title: `Upcoming ${item.transactionType}: ${item.description}`,
-        detail: `${formatMoney(item.amount, item.currency)} · ${formatDate(item.occurrence)}`,
-      }))),
+    ...(localStorage.getItem("finart-budget-notifications") === "false"
+      ? []
+      : budgets.flatMap((budget) => {
+          const spent = getBudgetSpent(budget, transactions);
+          const state = getBudgetState(budget, spent);
+          if (!state.approaching && !state.exceeded) return [];
+          return [
+            {
+              id: `budget-${budget.id}`,
+              title: state.exceeded
+                ? `${budget.category} budget exceeded`
+                : `${budget.category} budget is nearly used`,
+              detail: `${formatMoney(spent, budget.currency)} spent of ${formatMoney(budget.amount, budget.currency)}.`,
+            },
+          ];
+        })),
+    ...(localStorage.getItem("finart-recurring-notifications") === "false"
+      ? []
+      : recurring
+          .filter((item) => item.status === "active")
+          .map((item) => ({
+            ...item,
+            occurrence: getNextOccurrence(
+              item.nextDate,
+              item.frequency,
+              new Date(),
+              item.endDate,
+            ),
+          }))
+          .filter(
+            (item) =>
+              item.occurrence &&
+              item.occurrence.getTime() - Date.now() <= 7 * 86400000,
+          )
+          .map((item) => ({
+            id: `recurring-${item.id}`,
+            title: `Upcoming ${item.transactionType}: ${item.description}`,
+            detail: `${formatMoney(item.amount, item.currency)} · ${formatDate(item.occurrence)}`,
+          }))),
   ];
 
   const handleLogout = async () => {
@@ -102,13 +126,18 @@ const DashboardShell = () => {
         onClick={onNavigate}
         className="flex h-[72px] items-center gap-3 border-b border-sidebar-border px-5 font-semibold tracking-tight"
       >
- <span className="flex size-9 items-center justify-center rounded-xl bg-brand text-primary">
+        <span className="flex size-9 items-center justify-center rounded-xl bg-secondary text-primary">
           <Wallet aria-hidden="true" size={20} />
         </span>
         FINART
       </Link>
-      <nav aria-label="Dashboard navigation" className="flex-1 space-y-1 px-3 py-5">
-        <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">Workspace</p>
+      <nav
+        aria-label="Dashboard navigation"
+        className="flex-1 space-y-1 px-3 py-5"
+      >
+        <p className="px-3 pb-2 text-[11px] font-semibold uppercase tracking-[0.15em] text-muted-foreground">
+          Workspace
+        </p>
         {navigation.map(({ label, to, icon: Icon, end }) => (
           <NavLink
             key={to}
@@ -116,9 +145,9 @@ const DashboardShell = () => {
             end={end}
             onClick={onNavigate}
             className={({ isActive }) =>
- `flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring ${
+              `flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-medium transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring ${
                 isActive
- ? "bg-secondary text-primary "
+                  ? "bg-secondary text-primary "
                   : "text-muted-foreground hover:bg-muted hover:text-foreground"
               }`
             }
@@ -133,7 +162,7 @@ const DashboardShell = () => {
           type="button"
           onClick={handleLogout}
           disabled={loggingOut}
- className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60"
+          className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 text-sm font-medium text-muted-foreground transition hover:bg-muted hover:text-foreground focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring disabled:opacity-60"
         >
           <X aria-hidden="true" size={18} />
           {loggingOut ? "Signing out…" : "Sign out"}
@@ -143,8 +172,8 @@ const DashboardShell = () => {
   );
 
   return (
- <div className="min-h-screen bg-background text-foreground ">
- <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar lg:flex">
+    <div className="min-h-screen bg-background text-foreground ">
+      <aside className="fixed inset-y-0 left-0 z-30 hidden w-64 flex-col border-r border-sidebar-border bg-sidebar lg:flex">
         <SidebarContent />
       </aside>
 
@@ -152,7 +181,7 @@ const DashboardShell = () => {
         <div className="fixed inset-0 z-50 lg:hidden">
           <button
             type="button"
- className="absolute inset-0 bg-overlay/40"
+            className="absolute inset-0 bg-overlay/40"
             aria-label="Close navigation menu"
             onClick={() => setMobileOpen(false)}
           />
@@ -160,7 +189,7 @@ const DashboardShell = () => {
             <div className="absolute right-3 top-4 z-10">
               <button
                 type="button"
- className="flex size-10 items-center justify-center rounded-xl hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+                className="flex size-10 items-center justify-center rounded-xl hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
                 onClick={() => setMobileOpen(false)}
                 aria-label="Close navigation"
               >
@@ -180,7 +209,7 @@ const DashboardShell = () => {
                 type="button"
                 onClick={() => setMobileOpen(true)}
                 aria-label="Open dashboard navigation"
- className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring lg:hidden"
+                className="flex size-10 shrink-0 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring lg:hidden"
               >
                 <Menu aria-hidden="true" size={19} />
               </button>
@@ -188,13 +217,19 @@ const DashboardShell = () => {
                 <p className="hidden text-xs text-muted-foreground sm:block">
                   Welcome back{user?.name ? `, ${user.name.split(" ")[0]}` : ""}
                 </p>
-                <h1 className="truncate text-lg font-semibold sm:text-xl">{title}</h1>
+                <h1 className="truncate text-lg font-semibold sm:text-xl">
+                  {title}
+                </h1>
               </div>
             </div>
 
             <div className="flex items-center gap-2 sm:gap-3">
               <label className="relative hidden w-56 md:block xl:w-72">
-                <Search aria-hidden="true" size={17} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <Search
+                  aria-hidden="true"
+                  size={17}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+                />
                 <input
                   type="search"
                   value={searchTerm}
@@ -207,10 +242,14 @@ const DashboardShell = () => {
               <button
                 type="button"
                 onClick={toggleTheme}
- className="flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+                className="flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
                 aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} theme`}
               >
-                {theme === "dark" ? <Sun aria-hidden="true" size={18} /> : <Moon aria-hidden="true" size={18} />}
+                {theme === "dark" ? (
+                  <Sun aria-hidden="true" size={18} />
+                ) : (
+                  <Moon aria-hidden="true" size={18} />
+                )}
               </button>
               <div className="relative">
                 <button
@@ -218,26 +257,49 @@ const DashboardShell = () => {
                   onClick={() => setNotificationsOpen((open) => !open)}
                   aria-expanded={notificationsOpen}
                   aria-label={`Notifications, ${notifications.length} items`}
- className="relative flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
+                  className="relative flex size-10 items-center justify-center rounded-xl border border-border hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring"
                 >
                   <Bell aria-hidden="true" size={18} />
- {notifications.length > 0 && <span aria-hidden="true" className="absolute right-2 top-2 size-2 rounded-full bg-status-warning-surface" />}
+                  {notifications.length > 0 && (
+                    <span
+                      aria-hidden="true"
+                      className="absolute right-2 top-2 size-2 rounded-full bg-status-warning-surface"
+                    />
+                  )}
                 </button>
                 {notificationsOpen && (
                   <div className="absolute right-0 top-12 z-40 w-[min(22rem,calc(100vw-2rem))] rounded-2xl border border-border bg-card p-4 shadow-xl">
                     <div className="flex items-center justify-between">
                       <h2 className="font-semibold">Notifications</h2>
-                      <button type="button" onClick={() => setNotificationsOpen(false)} aria-label="Close notifications" className="rounded-md p-1 hover:bg-muted"><X size={16} aria-hidden="true" /></button>
+                      <button
+                        type="button"
+                        onClick={() => setNotificationsOpen(false)}
+                        aria-label="Close notifications"
+                        className="rounded-md p-1 hover:bg-muted"
+                      >
+                        <X size={16} aria-hidden="true" />
+                      </button>
                     </div>
                     <div className="mt-3 max-h-72 space-y-2 overflow-y-auto">
                       {notifications.length === 0 ? (
-                        <p className="py-5 text-center text-sm text-muted-foreground">No budget warnings or upcoming recurring items.</p>
-                      ) : notifications.map((item) => (
-                        <article key={item.id} className="rounded-xl bg-muted/60 p-3">
-                          <h3 className="text-sm font-medium">{item.title}</h3>
-                          <p className="mt-1 text-xs leading-5 text-muted-foreground">{item.detail}</p>
-                        </article>
-                      ))}
+                        <p className="py-5 text-center text-sm text-muted-foreground">
+                          No budget warnings or upcoming recurring items.
+                        </p>
+                      ) : (
+                        notifications.map((item) => (
+                          <article
+                            key={item.id}
+                            className="rounded-xl bg-muted/60 p-3"
+                          >
+                            <h3 className="text-sm font-medium">
+                              {item.title}
+                            </h3>
+                            <p className="mt-1 text-xs leading-5 text-muted-foreground">
+                              {item.detail}
+                            </p>
+                          </article>
+                        ))
+                      )}
                     </div>
                   </div>
                 )}
@@ -248,26 +310,51 @@ const DashboardShell = () => {
                   onClick={() => setProfileOpen((open) => !open)}
                   aria-expanded={profileOpen}
                   aria-label="Open user menu"
- className="flex min-h-10 items-center gap-2 rounded-xl border border-border px-2 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:px-3"
+                  className="flex min-h-10 items-center gap-2 rounded-xl border border-border px-2 hover:bg-muted focus-visible:outline focus-visible:outline-2 focus-visible:outline-ring sm:px-3"
                 >
- <span className="flex size-7 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-primary ">
+                  <span className="flex size-7 items-center justify-center rounded-full bg-secondary text-xs font-semibold text-primary ">
                     {(user?.name || user?.email || "F").charAt(0).toUpperCase()}
                   </span>
-                  <span className="hidden max-w-28 truncate text-sm font-medium xl:block">{user?.name || user?.email}</span>
-                  <ChevronDown aria-hidden="true" size={15} className="hidden sm:block" />
+                  <span className="hidden max-w-28 truncate text-sm font-medium xl:block">
+                    {user?.name || user?.email}
+                  </span>
+                  <ChevronDown
+                    aria-hidden="true"
+                    size={15}
+                    className="hidden sm:block"
+                  />
                 </button>
                 {profileOpen && (
                   <div className="absolute right-0 top-12 z-40 w-56 rounded-2xl border border-border bg-card p-2 shadow-xl">
-                    <p className="truncate px-3 py-2 text-xs text-muted-foreground">{user?.email}</p>
-                    <Link to="/dashboard/settings" onClick={() => setProfileOpen(false)} className="flex min-h-10 items-center rounded-lg px-3 text-sm hover:bg-muted">Account settings</Link>
-                    <button type="button" onClick={handleLogout} disabled={loggingOut} className="flex min-h-10 w-full items-center rounded-lg px-3 text-left text-sm hover:bg-muted disabled:opacity-60">{loggingOut ? "Signing out…" : "Sign out"}</button>
+                    <p className="truncate px-3 py-2 text-xs text-muted-foreground">
+                      {user?.email}
+                    </p>
+                    <Link
+                      to="/dashboard/settings"
+                      onClick={() => setProfileOpen(false)}
+                      className="flex min-h-10 items-center rounded-lg px-3 text-sm hover:bg-muted"
+                    >
+                      Account settings
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={handleLogout}
+                      disabled={loggingOut}
+                      className="flex min-h-10 w-full items-center rounded-lg px-3 text-left text-sm hover:bg-muted disabled:opacity-60"
+                    >
+                      {loggingOut ? "Signing out…" : "Sign out"}
+                    </button>
                   </div>
                 )}
               </div>
             </div>
           </div>
           <label className="relative block px-4 pb-3 md:hidden">
-            <Search aria-hidden="true" size={17} className="absolute left-7 top-1/2 -translate-y-[calc(50%+6px)] text-muted-foreground" />
+            <Search
+              aria-hidden="true"
+              size={17}
+              className="absolute left-7 top-1/2 -translate-y-[calc(50%+6px)] text-muted-foreground"
+            />
             <input
               type="search"
               value={searchTerm}
