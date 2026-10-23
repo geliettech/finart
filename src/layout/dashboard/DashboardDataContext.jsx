@@ -47,7 +47,7 @@ export const DashboardDataProvider = ({ children }) => {
       const messageByCode = {
         "permission-denied": `Firestore denied access to ${collectionLabel}. Confirm the deployed rules allow this verified user to access only their own records, and that existing records have the correct userId.`,
         "failed-precondition": collectionName === "transactions"
-          ? "Firestore is missing the transactions query index. Deploy the index in firestore.indexes.json (userId ascending, createdAt descending) to the Firebase project and wait for it to finish building."
+          ? "Firestore rejected the transactions query because its composite index is missing or still building. In the Firebase Console, open Firestore Database > Indexes and create a collection-scope index for transactions with userId ascending and createdAt descending. Vercel deploys the app but does not create Firestore indexes. Wait until the index is enabled, then reload."
           : `Firestore rejected the ${collectionLabel} query because the project configuration or query prerequisites are not ready.`,
         unauthenticated: "Your Firebase session is no longer valid. Sign out, sign back in, and try again.",
         unavailable: "Firestore is temporarily unavailable. Check your connection and try again.",

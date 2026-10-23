@@ -2,7 +2,7 @@
 
 FINART is a React-based finance application intended to help people record income, expenses, and investments, plan category budgets, review spending patterns, and keep recurring financial commitments visible. The goal is to give users a clearer picture of the activity they have entered, without presenting recorded transactions as verified bank balances or professional financial advice.
 
-> **Project status:** FINART is an actively developed frontend. Authentication and user-scoped finance features are implemented, but Firebase services must be configured before they can be used. Staff operations, subscription billing, and a live AI advisor backend are not configured. This repository does not include automated tests or a production deployment configuration.
+> **Project status:** FINART is an actively developed frontend. Authentication and user-scoped finance features are implemented, but Firebase services must be configured before they can be used. Staff operations, subscription billing, and a live AI advisor backend are not included; the advisor requires a separately configured secure endpoint. This repository does not include automated tests or a production deployment configuration.
 
 ## Contents
 
@@ -29,13 +29,13 @@ FINART is a React-based finance application intended to help people record incom
 | Public landing page | Implemented. Includes product information, feature and pricing sections, FAQ, and a dashboard preview. |
 | Authentication | Implemented with Firebase Authentication: email/password registration and sign-in, Google popup sign-in, email verification, password-reset emails, and protected customer routes. Live behavior depends on Firebase project configuration. |
 | Customer dashboard | Implemented at `/dashboard`. Includes an overview, transaction management, budgets, recurring schedule previews, analytics, reports, advisor page, and settings. Finance data is scoped to the signed-in account in the client service; deployed Firestore rules must be reviewed and verified. |
-| Transactions | Create, edit, delete, search, filter, sort, and paginate the currently loaded records. Income, expense, and investment contributions can be recorded. |
+| Transactions | Create, edit, delete, search, filter, sort, and paginate the currently loaded records. Income, expense, and investment contributions can be recorded. Transaction categories are selected from categories already present in the user's budgets. |
 | Budgets | Create, edit, and delete monthly category budgets. Spending is calculated from matching expense transactions only. |
-| Recurring schedules | Create, edit, pause/resume, and delete schedule records and preview upcoming dates. Schedules do not create transactions or move money automatically. |
+| Recurring schedules | Create, edit, pause/resume, and delete schedule records and preview upcoming dates. Categories are selected from the user's budget categories. Schedules do not create transactions or move money automatically. |
 | Personal analytics | Date/type/category filtering, expense-by-category summaries, monthly income/expense trends, budget comparisons, and a rule-based spending comparison based on loaded records. These figures are not financial advice. |
 | Customer reports | Export filtered, currently loaded transaction records as CSV in the browser. XLSX/PDF and persisted download history are not implemented. |
 | Preferences | Light/dark theme, display currency, and dashboard alert preferences. Currency and alert preferences are stored in the current browser. Amounts are not converted between currencies. |
-| AI financial advisor | The interface is present, but responses are unavailable unless `VITE_FINART_ADVISOR_ENDPOINT` points to a same-origin server endpoint. No provider key or AI service is bundled in this frontend. |
+| AI financial advisor | The page has two responsive cards: one for general financial questions and one for analysis of the signed-in user's loaded dashboard data. Both require `VITE_FINART_ADVISOR_ENDPOINT` to point to a secure same-origin server endpoint; no AI backend or provider key is included here. Analysis uses loaded transactions, current-month budget comparisons, and active recurring schedules due within 30 days. It sends a compact summary without transaction or recurring descriptions, reports data coverage and limitations, and keeps currencies separate. It does not have verified bank balances, savings balances, investment valuations, or financial goals, and cannot guarantee professional advice. |
 | Staff workspace | Routes under `/staff` require a refreshed Firebase ID token with the trusted `staff: true` custom claim. Staff overview/settings are present. User management, billing, platform analytics, support, staff reports, audit logs, and system health show unavailable states because their backend services do not exist here. |
 | Subscriptions and payments | Plan descriptions/prices appear in public pricing content. Checkout, subscription persistence, and Paystack payment processing are not implemented. |
 
@@ -175,7 +175,7 @@ Never commit a populated `.env` file. `.gitignore` excludes `.env` and local env
 5. Review the verification and password-reset email templates and ensure the configured Firebase Auth domain is available.
 6. Create Firestore in the project.
 7. Review and publish [firestore.rules](./firestore.rules) to the intended project. The file is source configuration only; it is not automatically deployed by this repository.
-8. Create the transaction index described in [firestore.indexes.json](./firestore.indexes.json) (`transactions`: `userId` ascending and `createdAt` descending). The repository does not include a `firebase.json` deployment configuration.
+8. In the Firebase Console, open **Firestore Database > Indexes** and create the collection-scope index described in [firestore.indexes.json](./firestore.indexes.json) (`transactions`: `userId` ascending and `createdAt` descending). Wait until it is enabled. Deploying the app to Vercel does not create or deploy Firestore indexes.
 9. Test authentication and Firestore access with separate accounts before storing real financial data.
 
 The Firestore rules allow verified users to access their own `transactions`, `budgets`, and `recurring` documents. They do not provide cross-user staff access. Do not deploy financial data use before reviewing and testing the rules against the intended project.

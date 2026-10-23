@@ -16,7 +16,7 @@ export const AuthLayout = ({
           className="inline-flex items-center gap-2 rounded-md font-bold tracking-tight focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-ring"
           aria-label="FINART home"
         >
-          <span className="flex size-9 items-center justify-center rounded-xl bg-brand text-primary">
+          <span className="flex size-9 items-center justify-center rounded-xl bg-secondary text-primary">
             <WalletCards aria-hidden="true" size={21} />
           </span>
           FINART

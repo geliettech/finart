@@ -33,12 +33,13 @@ const defaultSchedule = () => ({
 });
 
 const RecurringPage = () => {
-  const { recurring, loading, error } = useDashboardData();
+  const { recurring, budgets, loading, error } = useDashboardData();
   const [statusFilter, setStatusFilter] = useState("all");
   const [editing, setEditing] = useState(null);
   const [values, setValues] = useState(defaultSchedule);
   const [busy, setBusy] = useState(false);
 
+  const budgetCategories = [...new Set(budgets.map((budget) => budget.category).filter(Boolean))].sort();
   const visible = useMemo(() => recurring
     .filter((item) => statusFilter === "all" || item.status === statusFilter)
     .map((item) => ({ ...item, occurrence: getNextOccurrence(item.nextDate, item.frequency, new Date(), item.endDate) }))
@@ -171,7 +172,14 @@ const RecurringPage = () => {
               <div className="sm:col-span-2"><FormField label="Description" id="rec-description"><input id="rec-description" required maxLength={120} className={dashboardInputClass} value={values.description} onChange={(event) => setValues({ ...values, description: event.target.value })} /></FormField></div>
               <FormField label="Amount" id="rec-amount"><input id="rec-amount" required type="number" min="0.01" step="0.01" className={dashboardInputClass} value={values.amount} onChange={(event) => setValues({ ...values, amount: event.target.value })} /></FormField>
               <FormField label="Type" id="rec-type"><select id="rec-type" className={dashboardInputClass} value={values.transactionType} onChange={(event) => setValues({ ...values, transactionType: event.target.value })}><option value="expense">Expense</option><option value="income">Income</option></select></FormField>
-              <FormField label="Category" id="rec-category"><input id="rec-category" required maxLength={60} className={dashboardInputClass} value={values.category} onChange={(event) => setValues({ ...values, category: event.target.value })} /></FormField>
+              <FormField label="Category" id="rec-category">
+                <select id="rec-category" required className={dashboardInputClass} value={values.category} onChange={(event) => setValues({ ...values, category: event.target.value })}>
+                  <option value="" disabled>{budgetCategories.length ? "Select a budget category" : "Create a budget first"}</option>
+                  {editing?.category && !budgetCategories.includes(editing.category) && <option value={editing.category}>{editing.category} (existing)</option>}
+                  {budgetCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+                </select>
+                {!budgetCategories.length && <p className="mt-1 text-xs text-muted-foreground">Create a budget to add recurring schedules by category.</p>}
+              </FormField>
               <FormField label="Currency" id="rec-currency"><select id="rec-currency" className={dashboardInputClass} value={values.currency} onChange={(event) => setValues({ ...values, currency: event.target.value })}>{SUPPORTED_CURRENCIES.map((currency) => <option key={currency}>{currency}</option>)}</select></FormField>
               <FormField label="Frequency" id="rec-frequency"><select id="rec-frequency" className={dashboardInputClass} value={values.frequency} onChange={(event) => setValues({ ...values, frequency: event.target.value })}>{["weekly", "monthly", "quarterly", "yearly"].map((frequency) => <option key={frequency}>{frequency}</option>)}</select></FormField>
               <FormField label="Next occurrence date" id="rec-next-date"><input id="rec-next-date" required type="date" className={dashboardInputClass} value={values.nextDate} onChange={(event) => setValues({ ...values, nextDate: event.target.value })} /></FormField>

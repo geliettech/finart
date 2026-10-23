@@ -42,7 +42,7 @@ const emptyForm = () => ({
 });
 
 const TransactionsPage = () => {
-  const { transactions, loading, error, searchTerm } = useDashboardData();
+  const { transactions, budgets, loading, error, searchTerm } = useDashboardData();
   const [filters, setFilters] = useState({ type: "", category: "", from: "", to: "" });
   const [sort, setSort] = useState("date-desc");
   const [page, setPage] = useState(1);
@@ -54,6 +54,7 @@ const TransactionsPage = () => {
 
   useEffect(() => setPage(1), [searchTerm]);
 
+  const budgetCategories = [...new Set(budgets.map((budget) => budget.category).filter(Boolean))].sort();
   const categories = [...new Set(transactions.map((item) => item.category).filter(Boolean))].sort();
   const filtered = useMemo(() => {
     const result = filterTransactions(transactions, {
@@ -253,7 +254,12 @@ const TransactionsPage = () => {
                 </select>
               </FormField>
               <FormField label="Category" id="tx-category">
-                <input id="tx-category" maxLength={60} required placeholder="e.g. Housing" className={dashboardInputClass} value={formValues.category} onChange={(event) => setFormValues({ ...formValues, category: event.target.value })} />
+                <select id="tx-category" required className={dashboardInputClass} value={formValues.category} onChange={(event) => setFormValues({ ...formValues, category: event.target.value })}>
+                  <option value="" disabled>{budgetCategories.length ? "Select a budget category" : "Create a budget first"}</option>
+                  {editing?.category && !budgetCategories.includes(editing.category) && <option value={editing.category}>{editing.category} (existing)</option>}
+                  {budgetCategories.map((category) => <option key={category} value={category}>{category}</option>)}
+                </select>
+                {!budgetCategories.length && <p className="mt-1 text-xs text-muted-foreground">Create a budget to add transactions by category.</p>}
               </FormField>
               <FormField label="Date" id="tx-date">
                 <input id="tx-date" type="date" required className={dashboardInputClass} value={formValues.transactionDate} onChange={(event) => setFormValues({ ...formValues, transactionDate: event.target.value })} />
