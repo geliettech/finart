@@ -254,5 +254,6 @@ Set the Firebase web-app environment variables in the hosting provider's build e
 
 No `LICENSE` file was found in this repository. No open-source license is asserted by this README.
 
-- Repository: [geliettech/fina](https://github.com/geliettech/fina)
-- Issues: [GitHub Issues](https://github.com/geliettech/fina/issues)
+
+- Repository: [geliettech/finart](https://github.com/geliettech/finart)
+- Issues: [GitHub Issues](https://github.com/geliettech/finart/issues)
