@@ -1,4 +1,4 @@
-# FINART - AI Finance management App
+# FINART — AI Finance Management Platform
 
 FINART is a React-based finance application intended to help people record income, expenses, and investments, plan category budgets, review spending patterns, and keep recurring financial commitments visible. The goal is to give users a clearer picture of the activity they have entered, without presenting recorded transactions as verified bank balances or professional financial advice.
 
